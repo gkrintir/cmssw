@@ -860,19 +860,19 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
   e.getByToken(gsfElectronsCollection_, gsfElectronsHandle);
 
   // Get the conversions collection
-  edm::Handle<reco::ConversionCollection> conversions;
-  e.getByToken(conversionsToken_, conversions);
+  //edm::Handle<reco::ConversionCollection> conversions;
+  //e.getByToken(conversionsToken_, conversions);
 
   // Get the beam spot
-  edm::Handle<reco::BeamSpot> theBeamSpot;
-  e.getByToken(beamSpotToken_,theBeamSpot);
+  //edm::Handle<reco::BeamSpot> theBeamSpot;
+  //e.getByToken(beamSpotToken_,theBeamSpot);
 
   // Get rho value
-  edm::Handle<double> rhoH;
-  e.getByToken(rhoToken_,rhoH);
-  float rho = -999 ;
-  if (rhoH.isValid())
-    rho = *rhoH;
+  //edm::Handle<double> rhoH;
+  //e.getByToken(rhoToken_,rhoH);
+  //float rho = -999 ;
+  //if (rhoH.isValid())
+  //  rho = *rhoH;
 
   // Get the electron ID data from the event stream.
   // Note: this implies that the VID ID modules have been run upstream.
@@ -961,13 +961,13 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
     elePFNeuIso04_         .push_back(pfIsoCal.getPfIso(*ele, 5, 0.4, 0., 0.));
 
 
-    float eA = effectiveAreas_.getEffectiveArea(fabs(ele->superCluster()->eta()));
-    eleEffAreaTimesRho_.push_back(eA*rho);
+    //float eA = effectiveAreas_.getEffectiveArea(fabs(ele->superCluster()->eta()));
+    //eleEffAreaTimesRho_.push_back(eA*rho);
       
-    bool passConvVeto = !ConversionTools::hasMatchedConversion(*ele, 
-							       conversions,
-							       theBeamSpot->position());
-    elepassConversionVeto_.push_back( (int) passConvVeto );
+    //bool passConvVeto = !ConversionTools::hasMatchedConversion(*ele, 
+    //conversions,
+    //theBeamSpot->position());
+    //elepassConversionVeto_.push_back( (int) passConvVeto );
 
     // seed
     // eleBC1E_             .push_back(ele->superCluster()->seed()->energy());

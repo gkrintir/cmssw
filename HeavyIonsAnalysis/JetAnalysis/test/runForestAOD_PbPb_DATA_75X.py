@@ -25,7 +25,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-                                "/store/group/phys_heavyions/velicanu/reco/HIPhysicsMinBiasUPC/v0/000/262/548/recoExpress_84.root"
+                            "root://cmsxrootd.fnal.gov//store/user/azsigmon/HIPhoton40AndZ/HIRun2015E-PromptReco-AOD-DielectronSkim-ElePt8-v3/160129_162620/0000/Dielectron_Skim_pt8_298.root"
                             )
 )
 
@@ -198,7 +198,7 @@ process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.Input
 #####################
 # Electron ID
 #####################
-
+'''
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 process.load("RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi")
 
@@ -212,7 +212,7 @@ setupVIDSelection(process.egmGsfElectronIDs,process.cutBasedElectronID_Spring15_
 setupVIDSelection(process.egmGsfElectronIDs,process.cutBasedElectronID_Spring15_25ns_V1_standalone_loose)
 setupVIDSelection(process.egmGsfElectronIDs,process.cutBasedElectronID_Spring15_25ns_V1_standalone_medium)
 setupVIDSelection(process.egmGsfElectronIDs,process.cutBasedElectronID_Spring15_25ns_V1_standalone_tight)
-
+'''
 #####################################################################################
 
 #####################
@@ -232,7 +232,7 @@ process.ana_step = cms.Path(process.hltanalysis *
                             process.centralityBin *
                             process.hiEvtAnalyzer*
                             process.jetSequences +
-                            process.egmGsfElectronIDSequence + #Should be added in the path for VID module
+                            #process.egmGsfElectronIDSequence + #Should be added in the path for VID module
                             process.ggHiNtuplizer +
                             process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +

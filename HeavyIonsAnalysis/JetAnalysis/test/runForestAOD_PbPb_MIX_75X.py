@@ -27,13 +27,13 @@ process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
         #                                "file:/afs/cern.ch/work/r/richard/public/PbPb_RECODEBUG.root",
-        "file:step3_hi_mc.root",
+        "root://cmsxrootd.fnal.gov//store/user/velicanu/Merged/Pythia8_Z30eeJet_pthat30Norm_TuneCUETP8M1_5020GeV_cff_FOREST_PrivMC_v10/0.root",
                                 )
                             )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(100)
 )
 
 
