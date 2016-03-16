@@ -1,0 +1,131 @@
+# Conditions read from  CMS_CONDITIONS  via FrontierProd 
+DEBUG 2016-03-16 17:43:37,059: 	 Executing command: 'submit'
+DEBUG 2016-03-16 17:43:37,060: 	 Found CRAB cache file /afs/cern.ch/user/g/gkrintir/.crab3
+DEBUG 2016-03-16 17:43:37,069: 	 Checking credentials
+DEBUG 2016-03-16 17:43:37,069: 	 Found proxy file /tmp/x509up_u61469
+DEBUG 2016-03-16 17:43:37,069: 	 Getting proxy life time left
+DEBUG 2016-03-16 17:43:37,774: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u61469 -timeleft
+ output : 42668
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:38,382: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u61469 -actimeleft
+ output : 42666
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:38,382: 	 Proxy valid for 11:51:08 hours
+INFO 2016-03-16 17:43:38,382: 	 Will use CRAB configuration file crabConfig_CMSSW_7_6_1_PCC_ZeroBias3.py
+DEBUG 2016-03-16 17:43:38,382: 	 Loading CRAB configuration file.
+DEBUG 2016-03-16 17:43:38,383: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2016-03-16 17:43:38,641: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=gkrintir/CN=714588/CN=Georgios Krintiras
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:38,641: 	 Checking credentials
+DEBUG 2016-03-16 17:43:38,641: 	 Found proxy file /tmp/x509up_u61469
+DEBUG 2016-03-16 17:43:38,641: 	 Getting proxy life time left
+DEBUG 2016-03-16 17:43:39,250: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u61469 -timeleft
+ output : 42666
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:39,861: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u61469 -actimeleft
+ output : 42665
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:39,861: 	 Proxy valid for 11:51:06 hours
+DEBUG 2016-03-16 17:43:40,471: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u61469 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:40,872: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119).cern.ch
+DEBUG 2016-03-16 17:43:40,995: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=gkrintir/CN=714588/CN=Georgios Krintiras
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:40,995: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2016-03-16 17:43:40,995: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=gkrintir/CN=714588/CN=Georgios Krintiras_cmsweb.cern.ch for credential name
+DEBUG 2016-03-16 17:43:41,309: 	 Executing : 
+ command : myproxy-info -l 2b97668f72e13a2ef9701718e54b636cd5c06324 -s myproxy.cern.ch
+ output : username: 2b97668f72e13a2ef9701718e54b636cd5c06324
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=gkrintir/CN=714588/CN=Georgios Krintiras
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119).cern.ch
+  timeleft: 381:57:29  (15.9 days)
+
+ error: 
+ retcode : 0
+DEBUG 2016-03-16 17:43:41,310: 	 Myproxy is valid: 1375049
+DEBUG 2016-03-16 17:43:41,310: 	 Command use: submit
+DEBUG 2016-03-16 17:43:41,310: 	 Options use: ['crabConfig_CMSSW_7_6_1_PCC_ZeroBias3.py']
+DEBUG 2016-03-16 17:43:41,715: 	 CRABClient version: 3.3.1603.patch1
+DEBUG 2016-03-16 17:43:41,715: 	 Instance is prod
+DEBUG 2016-03-16 17:43:41,715: 	 Server base url is cmsweb.cern.ch
+DEBUG 2016-03-16 17:43:41,715: 	 Command url /crabserver/prod/workflow
+DEBUG 2016-03-16 17:43:41,716: 	 Started submission
+DEBUG 2016-03-16 17:43:41,716: 	 Working on /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/Run2015E-PromptReco-v1/crab_CMSSW_7_6_1_PCC_ZeroBias3
+DEBUG 2016-03-16 17:43:42,228: 	 Loading required information from the environment
+DEBUG 2016-03-16 17:43:42,228: 	 Found CMSSW_7_6_1 for slc6_amd64_gcc493 with base /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1
+DEBUG 2016-03-16 17:43:42,254: 	 UNIQUE NAME: tarUUID 2768d7b0-3477-41ab-bff3-44fa1db0c0cf 
+DEBUG 2016-03-16 17:43:42,255: 	 self.config: from WMCore.Configuration import Configuration
+config = Configuration()
+config.section_('General')
+config.General.transferLogs = False
+config.General.requestName = 'CMSSW_7_6_1_PCC_ZeroBias3'
+config.section_('JobType')
+config.JobType.psetName = 'Run_PixVertex_Event.py'
+config.JobType.pluginName = 'Analysis'
+config.JobType.maxJobRuntimeMin = 2750
+config.section_('Data')
+config.Data.inputDataset = '/ZeroBias3/Run2015E-PromptReco-v1/RECO'
+config.Data.publishDBS = 'phys03'
+config.Data.publication = False
+config.Data.unitsPerJob = 10
+config.Data.inputDBS = 'global'
+config.Data.splitting = 'LumiBased'
+config.Data.outLFNDirBase = '/store/user/gkrintir/testLUMI'
+config.Data.lumiMask = '/afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/jsondummy_262164.json'
+config.section_('Site')
+config.Site.storageSite = 'T2_BE_UCL'
+
+DEBUG 2016-03-16 17:43:42,255: 	 self.config.JobType.psetName: Run_PixVertex_Event.py
+INFO 2016-03-16 17:43:42,255: 	 Importing CMSSW configuration Run_PixVertex_Event.py
+INFO 2016-03-16 17:43:47,326: 	 Finished importing CMSSW configuration Run_PixVertex_Event.py
+DEBUG 2016-03-16 17:43:47,326: 	 Writing CMSSW configuration to /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/Run2015E-PromptReco-v1/crab_CMSSW_7_6_1_PCC_ZeroBias3/inputs/PSet.py
+DEBUG 2016-03-16 17:43:52,264: 	 The following EDM output files will be collected: []
+DEBUG 2016-03-16 17:43:52,265: 	 The following TFile output files will be collected: ['pcc_Data_PixVtx_Event.root']
+DEBUG 2016-03-16 17:43:52,265: 	 The following user output files will be collected: []
+DEBUG 2016-03-16 17:43:52,265: 	 Loading required information from the environment
+DEBUG 2016-03-16 17:43:52,265: 	 Found CMSSW_7_6_1 for slc6_amd64_gcc493 with base /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1
+DEBUG 2016-03-16 17:43:52,265: 	 Making tarball in /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/Run2015E-PromptReco-v1/crab_CMSSW_7_6_1_PCC_ZeroBias3/inputs/2768d7b0-3477-41ab-bff3-44fa1db0c0cfdefault.tgz
+DEBUG 2016-03-16 17:43:52,281: 	 Checking directory /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/lib
+DEBUG 2016-03-16 17:43:52,281: 	 Adding directory /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/lib to tarball
+DEBUG 2016-03-16 17:43:53,098: 	 Checking directory /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/biglib
+DEBUG 2016-03-16 17:43:53,098: 	 Adding directory /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/biglib to tarball
+DEBUG 2016-03-16 17:43:53,098: 	 Checking directory /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/module
+DEBUG 2016-03-16 17:43:53,126: 	 Adding data directory /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/interface to tarball
+DEBUG 2016-03-16 17:43:54,339: 	 Uploading archive /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/Run2015E-PromptReco-v1/crab_CMSSW_7_6_1_PCC_ZeroBias3/inputs/2768d7b0-3477-41ab-bff3-44fa1db0c0cfdefault.tgz to the CRAB cache. Using URI https://cmsweb.cern.ch/crabcache
+DEBUG 2016-03-16 17:43:55,589: 	 Result uploading input files: 50ed7668ee8bec7cdb43312555a31513cd21f8ecd848c0957b7b3ab310e3e79f.tar.gz 
+DEBUG 2016-03-16 17:43:55,590: 	 Attaching lumi mask /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/jsondummy_262164.json to the request
+DEBUG 2016-03-16 17:43:55,590: 	 Reading lumi-mask from /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/jsondummy_262164.json
+INFO 2016-03-16 17:43:55,591: 	 Sending the request to the server
+DEBUG 2016-03-16 17:43:55,591: 	 Submitting {'maxjobruntime': 2750, 'ignorelocality': 0, 'savelogsflag': 0, 'useparent': 0, 'asyncdest': 'T2_BE_UCL', 'algoargs': 10, 'cachefilename': '50ed7668ee8bec7cdb43312555a31513cd21f8ecd848c0957b7b3ab310e3e79f.tar.gz', 'numcores': 1, 'addoutputfiles': [], 'generator': 'pythia', 'maxmemory': 2000, 'publishdbsurl': 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter', 'priority': 10, 'jobsw': 'CMSSW_7_6_1', 'edmoutfiles': [], 'userfiles': [], 'primarydataset': '', 'inputdata': '/ZeroBias3/Run2015E-PromptReco-v1/RECO', 'lfn': '/store/user/gkrintir/testLUMI', 'dryrun': 0, 'workflow': 'crab_CMSSW_7_6_1_PCC_ZeroBias3', 'adduserfiles': [], 'jobarch': 'slc6_amd64_gcc493', 'lumis': ['1,387'], 'nonprodsw': 0, 'tfileoutfiles': ['pcc_Data_PixVtx_Event.root'], 'oneEventMode': 0, 'cacheurl': 'https://cmsweb.cern.ch/crabcache', 'saveoutput': 1, 'publication': 0, 'runs': [u'262164'], 'totalunits': 0, 'splitalgo': 'LumiBased', 'nonvaliddata': 0, 'dbsurl': 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader', 'publishgroupname': 0, 'jobtype': 'Analysis', 'publishname2': ''} 
+DEBUG 2016-03-16 17:43:55,591: 	 Encoded submit request: maxjobruntime=2750&ignorelocality=0&savelogsflag=0&useparent=0&asyncdest=T2_BE_UCL&algoargs=10&cachefilename=50ed7668ee8bec7cdb43312555a31513cd21f8ecd848c0957b7b3ab310e3e79f.tar.gz&numcores=1&generator=pythia&maxmemory=2000&publishdbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fphys03%2FDBSWriter&priority=10&jobsw=CMSSW_7_6_1&primarydataset=&inputdata=%2FZeroBias3%2FRun2015E-PromptReco-v1%2FRECO&lfn=%2Fstore%2Fuser%2Fgkrintir%2FtestLUMI&dryrun=0&workflow=crab_CMSSW_7_6_1_PCC_ZeroBias3&jobarch=slc6_amd64_gcc493&nonprodsw=0&oneEventMode=0&cacheurl=https%3A%2F%2Fcmsweb.cern.ch%2Fcrabcache&saveoutput=1&publication=0&totalunits=0&splitalgo=LumiBased&nonvaliddata=0&dbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fglobal%2FDBSReader&publishgroupname=0&jobtype=Analysis&publishname2=&tfileoutfiles=pcc_Data_PixVtx_Event.root&runs=262164&lumis=1%2C387
+DEBUG 2016-03-16 17:43:56,697: 	 Result: {'result': [{'RequestName': '160316_164355:gkrintir_crab_CMSSW_7_6_1_PCC_ZeroBias3'}]}
+INFO 2016-03-16 17:43:56,737: 	 Success: Your task has been delivered to the CRAB3 server.
+INFO 2016-03-16 17:43:56,737: 	 Task name: 160316_164355:gkrintir_crab_CMSSW_7_6_1_PCC_ZeroBias3
+INFO 2016-03-16 17:43:56,738: 	 Please use 'crab status' to check how the submission process proceeds.
+DEBUG 2016-03-16 17:43:56,738: 	 About to return
+INFO 2016-03-16 17:43:56,741: 	 Log file is /afs/cern.ch/user/g/gkrintir/github/PCCTools/CMSSW_7_6_1/src/RecoLuminosity/LumiProducer/test/analysis/test/Run2015E-PromptReco-v1/crab_CMSSW_7_6_1_PCC_ZeroBias3/crab.log
