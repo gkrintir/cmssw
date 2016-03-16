@@ -11,5 +11,5 @@
     "Run2015D-05Oct2015" : ["74X_dataRun2_reMiniAOD_v0"],
     "Run2015C_25ns-05Oct2015" : ["74X_dataRun2_v4"],
     "RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2" : ["74X_mcRun2_asymptotic_v2"],
-    "Run2015E-PromptReco"  : ["74X_mcRun2_asymptotic_v2"]
+    "Run2015E-PromptReco"  : ["75X_dataRun2_Prompt_ppAt5TeV_v0"]
 }
