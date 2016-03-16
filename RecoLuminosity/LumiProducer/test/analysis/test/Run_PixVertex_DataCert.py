@@ -43,7 +43,7 @@ process.zerobiasfilter = cms.EDFilter("HLTHighLevel",
    HLTPaths = cms.vstring("*ZeroBias*"),
    eventSetupPathsKey = cms.string(""),
    andOr = cms.bool(True),
-   throw = cms.bool(False)
+   throw = cms.bool(True)
     )
 
 # the main Analyzer

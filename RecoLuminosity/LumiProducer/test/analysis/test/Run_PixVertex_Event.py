@@ -79,5 +79,5 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 process.source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles) 
 readFiles.extend([
-'/store/data/Run2015A/ZeroBias1/RECO/PromptReco-v1/000/250/786/00000/B4CDEBBC-F52A-E511-808D-02163E011CE8.root',
+'root://cms-xrd-global.cern.ch//store/data/Run2015E/ZeroBias3/RECO/PromptReco-v1/000/262/164/00000/00389D44-5C93-E511-AFF2-02163E014386.root',
 ])
