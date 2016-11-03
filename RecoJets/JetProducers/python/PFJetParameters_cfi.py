@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 PFJetParameters = cms.PSet(
-    src            = cms.InputTag('particleFlow'),
+    src            = cms.InputTag('packedPFCandidates'),
     srcPVs         = cms.InputTag(''),
     jetType        = cms.string('PFJet'),
     doOutputJets   = cms.bool(True),

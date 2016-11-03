@@ -24,6 +24,7 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
+#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutSetup.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
@@ -71,9 +72,9 @@ public:
 
 private:
 
-  int getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandidateCollection *pfCandidateColl);
+  int getPFJetMuon(const pat::Jet& pfJet, const pat::PackedCandidateCollection *pfCandidateColl);
 
-  double getPtRel(const reco::PFCandidate lep, const pat::Jet& jet );
+  double getPtRel(const pat::PackedCandidate lep, const pat::Jet& jet );
 
   void saveDaughters( const reco::GenParticle & gen);
   void saveDaughters( const reco::Candidate & gen);
@@ -97,7 +98,7 @@ private:
   edm::EDGetTokenT<reco::JetView>              matchTag_;
   edm::EDGetTokenT<pat::JetCollection>         matchTagPat_;
   edm::EDGetTokenT<reco::JetView>              subjetGenTag_;
-  edm::EDGetTokenT<reco::PFCandidateCollection>         pfCandidateLabel_;
+  edm::EDGetTokenT<pat::PackedCandidateCollection>         pfCandidateLabel_;
   edm::EDGetTokenT<reco::TrackCollection>         trackTag_;
   edm::EDGetTokenT<reco::GenParticleCollection>         genParticleSrc_;
   edm::EDGetTokenT<std::vector<reco::GenJet> >         genjetTag_;

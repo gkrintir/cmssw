@@ -49,7 +49,8 @@ HiPFCandAnalyzer::HiPFCandAnalyzer(const edm::ParameterSet& iConfig)
   // Event source
   // Event Info
   pfCandidateLabel_ = iConfig.getParameter<edm::InputTag>("pfCandidateLabel");
-  pfCandidatePF_ = consumes<reco::PFCandidateCollection> (pfCandidateLabel_);
+  //edm::EDGetTokenT<pat::PackedCandidatCollection> pfCandidatePF_;
+  pfCandidatePF_ = consumes<pat::PackedCandidateCollection> (pfCandidateLabel_);
   pfCandidateView_ = consumes<reco::CandidateView> (pfCandidateLabel_);
   pfPtMin_ = iConfig.getParameter<double>("pfPtMin");
   genPtMin_ = iConfig.getParameter<double>("genPtMin");
@@ -109,10 +110,10 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   // Fill PF info
 
-  edm::Handle<reco::PFCandidateCollection> pfCandidates;
+  edm::Handle<pat::PackedCandidateCollection> pfCandidates;
   iEvent.getByToken(pfCandidatePF_,pfCandidates);
   iEvent.getByToken(pfCandidateView_,candidates_);
-  const reco::PFCandidateCollection *pfCandidateColl = pfCandidates.product();
+  const pat::PackedCandidateCollection *pfCandidateColl = pfCandidates.product();
   if (doVS_) {
    iEvent.getByToken(srcVorMap_,backgrounds_);
    iEvent.getByToken(srcVorFloat_,vn_);
@@ -134,7 +135,7 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   }
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
-    const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);
+    const pat::PackedCandidate pfCandidate = pfCandidateColl->at(icand);
     reco::CandidateViewRef ref(candidates_,icand);
 
     double vsPtInitial=-999, vsPt=-999, vsArea = -999;
@@ -150,7 +151,7 @@ HiPFCandAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     double energy = pfCandidate.energy();
     if(pt<=pfPtMin_) continue;
 
-    int id = pfCandidate.particleId();
+    int id = pfCandidate.pdgId();
     if(skipCharged_ && (abs(id) == 1 || abs(id) == 3)) continue;
 
     pfEvt_.pfId_.push_back( id );

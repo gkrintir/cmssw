@@ -13,6 +13,7 @@
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/HeavyIonEvent/interface/CentralityBins.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include <vector>
@@ -100,7 +101,8 @@ private:
 
   // Event Info
   edm::InputTag pfCandidateLabel_;
-  edm::EDGetTokenT<reco::PFCandidateCollection> pfCandidatePF_;
+  //edm::EDGetTokenT<reco::PFCandidateCollection> pfCandidatePF_;
+  edm::EDGetTokenT<pat::PackedCandidateCollection> pfCandidatePF_;
   edm::EDGetTokenT<reco::CandidateView> pfCandidateView_;
   edm::EDGetTokenT<reco::GenParticleCollection> genLabel_;
   edm::EDGetTokenT<pat::JetCollection> jetLabel_;

@@ -26,13 +26,13 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-                                "root://eoscms.cern.ch//eos/cms/store/cmst3/group/hintt/CMSSW_7_5_8_patch2/TTbar/RECO/Events_1.root"
+                                "file:/afs/cern.ch/work/g/gkrintir/private/HI/miniAOD/CMSSW_7_5_8_patch3/src/miniAOD-prod_PAT_11.root"
                             )
 )
 
 # Number of events we want to process, -1 = all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10))
+    input = cms.untracked.int32(-1))
 
 
 #####################################################################################
@@ -82,23 +82,23 @@ process.load("HeavyIonsAnalysis.JetAnalysis.FullJetSequence_nominalPP")
 ############################
 process.load('HeavyIonsAnalysis.EventAnalysis.hltanalysis_cff')
 process.load('HeavyIonsAnalysis.EventAnalysis.hievtanalyzer_data_cfi') #use data version to avoid PbPb MC
-process.hiEvtAnalyzer.Vertex = cms.InputTag("offlinePrimaryVertices")
+process.hiEvtAnalyzer.Vertex = cms.InputTag("offlineSlimmedPrimaryVertices")
 process.hiEvtAnalyzer.doCentrality = cms.bool(False)
 process.hiEvtAnalyzer.doEvtPlane = cms.bool(False)
 process.hiEvtAnalyzer.doMC = cms.bool(True) #general MC info
 process.hiEvtAnalyzer.doHiMC = cms.bool(False) #HI specific MC info
 
 process.load('HeavyIonsAnalysis.JetAnalysis.HiGenAnalyzer_cfi')
-process.HiGenParticleAna.genParticleSrc = cms.untracked.InputTag("genParticles")
+process.HiGenParticleAna.genParticleSrc = cms.untracked.InputTag("prunedGenParticles")
 process.HiGenParticleAna.doHI = False
 process.load('HeavyIonsAnalysis.EventAnalysis.runanalyzer_cff')
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_pp_cfi")
 process.pfcandAnalyzer.skipCharged = False
 process.pfcandAnalyzer.pfPtMin = 0
-process.pfcandAnalyzer.pfCandidateLabel = cms.InputTag("particleFlow")
+process.pfcandAnalyzer.pfCandidateLabel = cms.InputTag("packedPFCandidates")
 process.pfcandAnalyzer.doVS = cms.untracked.bool(False)
 process.pfcandAnalyzer.doUEraw_ = cms.untracked.bool(False)
-process.pfcandAnalyzer.genLabel = cms.InputTag("genParticles")
+process.pfcandAnalyzer.genLabel = cms.InputTag("prunedGenParticles")
 
 #####################################################################################
 
@@ -117,13 +117,13 @@ process.load('HeavyIonsAnalysis.JetAnalysis.TrkAnalyzers_cff')
 # photons
 ######################
 process.load('HeavyIonsAnalysis.PhotonAnalysis.ggHiNtuplizer_cfi')
-process.ggHiNtuplizer.gsfElectronLabel   = cms.InputTag("gedGsfElectrons")
+process.ggHiNtuplizer.gsfElectronLabel   = cms.InputTag("slimmedElectrons")
 process.ggHiNtuplizer.recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerpp')
-process.ggHiNtuplizer.VtxLabel           = cms.InputTag("offlinePrimaryVertices")
-process.ggHiNtuplizer.particleFlowCollection = cms.InputTag("particleFlow")
+process.ggHiNtuplizer.VtxLabel           = cms.InputTag("offlineSlimmedPrimaryVertices")
+process.ggHiNtuplizer.particleFlowCollection = cms.InputTag("packedPFCandidates")
 process.ggHiNtuplizer.doVsIso            = cms.bool(False)
 process.ggHiNtuplizer.doElectronVID      = cms.bool(True)
-process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.InputTag('gedPhotons'),
+process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.InputTag('slimmedPhotons'),
                                                        recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerppGED'))
 
 ####################################################################################
@@ -134,7 +134,7 @@ process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.Input
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 # turn on VID producer, indicate data format to be processed
 # DataFormat.AOD or DataFormat.MiniAOD
-dataFormat = DataFormat.AOD
+dataFormat = DataFormat.MiniAOD
 switchOnVIDElectronIdProducer(process, dataFormat)
 
 # define which IDs we want to produce. Check here https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_7_4
@@ -159,16 +159,16 @@ process.load("HeavyIonsAnalysis.VectorBosonAnalysis.tupelSequence_pp_mc_cff")
 #########################
 process.ana_step = cms.Path(process.hltanalysis *
                             process.hiEvtAnalyzer *
-                            process.HiGenParticleAna*
+                            process.HiGenParticleAna *
                             process.jetSequences +
                             process.egmGsfElectronIDSequence + #Should be added in the path for VID module
                             process.ggHiNtuplizer +
-                            process.ggHiNtuplizerGED +
+                            #process.ggHiNtuplizerGED +
                             process.pfcandAnalyzer +
                             process.HiForest +
-			    process.trackSequencesPP +
-                            process.runAnalyzer +
-                            process.tupelPatSequence
+			    #process.trackSequencesPP +
+                            process.runAnalyzer 
+                            #process.tupelPatSequence
 )
 
 #####################################################################################
@@ -186,20 +186,20 @@ process.HBHENoiseFilterResultRun2Tight = cms.Path(process.fHBHENoiseFilterResult
 process.HBHEIsoNoiseFilterResult = cms.Path(process.fHBHEIsoNoiseFilterResult)
 
 process.PAprimaryVertexFilter = cms.EDFilter("VertexSelector",
-    src = cms.InputTag("offlinePrimaryVertices"),
+    src = cms.InputTag("offlineSlimmedPrimaryVertices"),
     cut = cms.string("!isFake && abs(z) <= 25 && position.Rho <= 2 && tracksSize >= 2"),
     filter = cms.bool(True), # otherwise it won't filter the events
 )
 
-process.NoScraping = cms.EDFilter("FilterOutScraping",
- applyfilter = cms.untracked.bool(True),
- debugOn = cms.untracked.bool(False),
- numtrack = cms.untracked.uint32(10),
- thresh = cms.untracked.double(0.25)
-)
+#process.NoScraping = cms.EDFilter("FilterOutScraping",
+# applyfilter = cms.untracked.bool(True),
+# debugOn = cms.untracked.bool(False),
+# numtrack = cms.untracked.uint32(10),
+# thresh = cms.untracked.double(0.25)
+#)
 
 process.pPAprimaryVertexFilter = cms.Path(process.PAprimaryVertexFilter)
-process.pBeamScrapingFilter=cms.Path(process.NoScraping)
+#process.pBeamScrapingFilter=cms.Path(process.NoScraping)
 
 process.load("HeavyIonsAnalysis.VertexAnalysis.PAPileUpVertexFilter_cff")
 

@@ -48,6 +48,7 @@ akFilter4PFJets = cms.EDProducer(
 akFilter5PFJets = akFilter4PFJets.clone(rParam = cms.double(0.5))
 
 from RecoJets.Configuration.GenJetParticles_cff import *
+genParticlesForJets.src = cms.InputTag("packedGenParticles")
 from RecoHI.HiJetAlgos.HiGenJets_cff import *
 from HeavyIonsAnalysis.JetAnalysis.makePartons_cff import myPartons
 
@@ -67,22 +68,22 @@ highPurityTracks = cms.EDFilter("TrackSelector",
 jetSequences = cms.Sequence(
     myPartons +
     genParticlesForJets +
-    ak3GenJets +
+    #ak3GenJets +
     ak4GenJets +
-    ak5GenJets +
-    ak3PFJets +
-    ak5PFJets +
-    akSoftDrop4PFJets +
-    akSoftDrop5PFJets +
+    #ak5GenJets +
+    #ak3PFJets +
+    #ak5PFJets +
+    #akSoftDrop4PFJets +
+    #akSoftDrop5PFJets +
     akFilter4PFJets +
-    akFilter5PFJets +
-    akSoftDrop4GenJets +
-    akSoftDrop5GenJets +
-    highPurityTracks +
-    ak3PFJetSequence +
-    ak4PFJetSequence +
-    ak5PFJetSequence +
-    ak4CaloJetSequence +
-    akSoftDrop4PFJetSequence +
-    akSoftDrop5PFJetSequence
+    #akFilter5PFJets +
+    #akSoftDrop4GenJets +
+    #akSoftDrop5GenJets +
+    #highPurityTracks +
+    #ak3PFJetSequence +
+    ak4PFJetSequence #+
+    #ak5PFJetSequence +
+    #ak4CaloJetSequence +
+    #akSoftDrop4PFJetSequence +
+    #akSoftDrop5PFJetSequence
 )

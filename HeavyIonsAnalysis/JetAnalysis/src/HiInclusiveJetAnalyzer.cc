@@ -115,7 +115,7 @@ HiInclusiveJetAnalyzer::HiInclusiveJetAnalyzer(const edm::ParameterSet& iConfig)
   saveBfragments_  = iConfig.getUntrackedParameter<bool>("saveBfragments",false);
   skipCorrections_  = iConfig.getUntrackedParameter<bool>("skipCorrections",false);
 
-  pfCandidateLabel_ = consumes<reco::PFCandidateCollection> (iConfig.getUntrackedParameter<edm::InputTag>("pfCandidateLabel",edm::InputTag("particleFlowTmp")));
+  pfCandidateLabel_ = consumes<pat::PackedCandidateCollection> (iConfig.getUntrackedParameter<edm::InputTag>("pfCandidateLabel",edm::InputTag("particleFlowTmp")));
 
   doTower = iConfig.getUntrackedParameter<bool>("doTower",false);
   if(doTower){
@@ -572,24 +572,24 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
   edm::Handle<pat::JetCollection> patjets;
   if(usePat_)iEvent.getByToken(jetTagPat_, patjets);
-
+  /*
+  if(doMatch_){
   edm::Handle<pat::JetCollection> patmatchedjets;
   iEvent.getByToken(matchTagPat_, patmatchedjets);
 
   edm::Handle<reco::JetView> matchedjets;
   iEvent.getByToken(matchTag_, matchedjets);
-
+  }
+  */
   if(doGenSubJets_)
     iEvent.getByToken(subjetGenTag_, gensubjets_);
   
   edm::Handle<reco::JetView> jets;
   iEvent.getByToken(jetTag_, jets);
 
-  edm::Handle<reco::PFCandidateCollection> pfCandidates;
+  edm::Handle<pat::PackedCandidateCollection> pfCandidates;
   iEvent.getByToken(pfCandidateLabel_,pfCandidates);
 
-  edm::Handle<reco::TrackCollection> tracks;
-  iEvent.getByToken(trackTag_,tracks);
 
   // edm::Handle<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > > ebHits;
   // edm::Handle<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > > eeHits;
@@ -687,6 +687,9 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
     math::XYZVector jetDir = jet.momentum().Unit();
 
     if(doLifeTimeTagging_){
+      edm::Handle<reco::TrackCollection> tracks;
+      iEvent.getByToken(trackTag_,tracks);
+
       int ith_tagged =    this->TaggedJet(jet,jetTags_SvtxHighEff);
       if(ith_tagged >= 0){
 	jets_.discr_ssvHighEff[jets_.nref] = (*jetTags_SvtxHighEff)[ith_tagged].second;
@@ -845,12 +848,12 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
       //  jets_.ndiscr_muByPt[jets_.nref] = SoftMN;
       //}
 
-      const PFCandidateCollection *pfCandidateColl = &(*pfCandidates);
+      const pat::PackedCandidateCollection *pfCandidateColl = &(*pfCandidates);
       int pfMuonIndex = getPFJetMuon(jet, pfCandidateColl);
 
 
       if(pfMuonIndex >=0){
-	const reco::PFCandidate muon = pfCandidateColl->at(pfMuonIndex);
+	const pat::PackedCandidate muon = pfCandidateColl->at(pfMuonIndex);
 	jets_.mupt[jets_.nref]    =  muon.pt();
 	jets_.mueta[jets_.nref]   =  muon.eta();
 	jets_.muphi[jets_.nref]   =  muon.phi();
@@ -912,7 +915,7 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
       jets_.signalHardSum[jets_.nref] = 0;
 
       jets_.subid[jets_.nref] = -1;
-
+      /*
       for(unsigned int icand = 0; icand < tracks->size(); ++icand){
 	const reco::Track& track = (*tracks)[icand];
 	if(useQuality_ ){
@@ -935,13 +938,13 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
 	}
       }
-
+      */
       for(unsigned int icand = 0; icand < pfCandidates->size(); ++icand){
-        const reco::PFCandidate& track = (*pfCandidates)[icand];
+        const pat::PackedCandidate& track = (*pfCandidates)[icand];
         double dr = deltaR(jet,track);
         if(dr < rParam){
 	  double ptcand = track.pt();
-	  int pfid = track.particleId();
+	  int pfid = track.pdgId();
 
 	  switch(pfid){
 
@@ -1012,7 +1015,11 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 
 
     if(doMatch_){
-
+      edm::Handle<pat::JetCollection> patmatchedjets;
+      iEvent.getByToken(matchTagPat_, patmatchedjets);
+      
+      edm::Handle<reco::JetView> matchedjets;
+      iEvent.getByToken(matchTag_, matchedjets);
       // Alternative reconstruction matching (PF for calo, calo for PF)
 
       double drMin = 100;
@@ -1076,10 +1083,10 @@ HiInclusiveJetAnalyzer::analyze(const Event& iEvent,
 	for (size_t index_pf_candidate = 0;
 	     index_pf_candidate < pfCandidates->size();
 	     index_pf_candidate++) {
-	  const reco::PFCandidate &p =
+	  const pat::PackedCandidate &p =
 	    (*pfCandidates)[index_pf_candidate];
 
-	  switch (p.particleId()) {
+	  switch (p.pdgId()) {
 	    //case 1:	// Charged hadron
 	    //case 3:	// Muon
 	  case 4:	// Photon
@@ -1468,7 +1475,7 @@ void HiInclusiveJetAnalyzer::fillHLTBits(const edm::Event &iEvent)
 }
 
 int
-HiInclusiveJetAnalyzer::getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandidateCollection *pfCandidateColl)
+HiInclusiveJetAnalyzer::getPFJetMuon(const pat::Jet& pfJet, const pat::PackedCandidateCollection *pfCandidateColl)
 {
 
   int pfMuonIndex = -1;
@@ -1476,9 +1483,9 @@ HiInclusiveJetAnalyzer::getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandid
 
 
   for(unsigned icand=0;icand<pfCandidateColl->size(); icand++) {
-    const reco::PFCandidate pfCandidate = pfCandidateColl->at(icand);
+    const pat::PackedCandidate pfCandidate = pfCandidateColl->at(icand);
 
-    int id = pfCandidate.particleId();
+    int id = pfCandidate.pdgId();
     if(abs(id) != 3) continue;
 
     if(reco::deltaR(pfJet,pfCandidate)>0.5) continue;
@@ -1496,7 +1503,7 @@ HiInclusiveJetAnalyzer::getPFJetMuon(const pat::Jet& pfJet, const reco::PFCandid
 
 
 double
-HiInclusiveJetAnalyzer::getPtRel(const reco::PFCandidate lep, const pat::Jet& jet )
+HiInclusiveJetAnalyzer::getPtRel(const pat::PackedCandidate lep, const pat::Jet& jet )
 {
 
   float lj_x = jet.p4().px();

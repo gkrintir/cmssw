@@ -50,6 +50,8 @@ ggHiNtuplizer::ggHiNtuplizer(const edm::ParameterSet& ps):
       voronoiBkgCalo_ = consumes<edm::ValueMap<reco::VoronoiBackground> > (ps.getParameter<edm::InputTag>("voronoiBackgroundCalo"));
       voronoiBkgPF_ = consumes<edm::ValueMap<reco::VoronoiBackground> > (ps.getParameter<edm::InputTag>("voronoiBackgroundPF"));
     }
+    pfMETlabel_ = consumes<edm::View<pat::MET> > (ps.getParameter<edm::InputTag>("pfMETLabel"));
+    pfMETNoHFlabel_ = consumes<edm::View<pat::MET> > (ps.getParameter<edm::InputTag>("pfMETNoHFLabel"));
   }
 
 
@@ -61,13 +63,64 @@ ggHiNtuplizer::ggHiNtuplizer(const edm::ParameterSet& ps):
   tree_->Branch("event",  &event_);
   tree_->Branch("lumis",  &lumis_);
   tree_->Branch("isData", &isData_);
+  tree_->Branch("pfMET",            &pfMET_);
+  tree_->Branch("pfMETPhi",         &pfMETPhi_);
+  tree_->Branch("pfMETsumEt",       &pfMETsumEt_);
+  tree_->Branch("pfMETmEtSig",      &pfMETmEtSig_);
+  tree_->Branch("pfMETSig",         &pfMETSig_);
+  //tree_->Branch("pfMET_T1JERUp",    &pfMET_T1JERUp_);
+  //tree_->Branch("pfMET_T1JERDo",    &pfMET_T1JERDo_);
+  tree_->Branch("pfMET_T1JESUp",    &pfMET_T1JESUp_);
+  tree_->Branch("pfMET_T1JESDo",    &pfMET_T1JESDo_);
+  tree_->Branch("pfMET_T1MESUp",    &pfMET_T1MESUp_);
+  tree_->Branch("pfMET_T1MESDo",    &pfMET_T1MESDo_);
+  tree_->Branch("pfMET_T1EESUp",    &pfMET_T1EESUp_);
+  tree_->Branch("pfMET_T1EESDo",    &pfMET_T1EESDo_);
+  tree_->Branch("pfMET_T1PESUp",    &pfMET_T1PESUp_);
+  tree_->Branch("pfMET_T1PESDo",    &pfMET_T1PESDo_);
+  tree_->Branch("pfMET_T1TESUp",    &pfMET_T1TESUp_);
+  tree_->Branch("pfMET_T1TESDo",    &pfMET_T1TESDo_);
+  tree_->Branch("pfMET_T1UESUp",    &pfMET_T1UESUp_);
+  tree_->Branch("pfMET_T1UESDo",    &pfMET_T1UESDo_);
+  tree_->Branch("pfMETPhi_T1JESUp", &pfMETPhi_T1JESUp_);
+  tree_->Branch("pfMETPhi_T1JESDo", &pfMETPhi_T1JESDo_);
+  tree_->Branch("pfMETPhi_T1UESUp", &pfMETPhi_T1UESUp_);
+  tree_->Branch("pfMETPhi_T1UESDo", &pfMETPhi_T1UESDo_);
+
+  tree_->Branch("pfMETNoHF",            &pfMETNoHF_);
+  tree_->Branch("pfMETNoHFPhi",         &pfMETNoHFPhi_);
+  tree_->Branch("pfMETNoHFsumEt",       &pfMETNoHFsumEt_);
+  tree_->Branch("pfMETNoHFmEtSig",      &pfMETNoHFmEtSig_);
+  tree_->Branch("pfMETNoHFSig",         &pfMETNoHFSig_);
+  //tree_->Branch("pfMETNoHF_T1JERUp",    &pfMETNoHF_T1JERUp_);
+  //tree_->Branch("pfMETNoHF_T1JERDo",    &pfMETNoHF_T1JERDo_);
+  tree_->Branch("pfMETNoHF_T1JESUp",    &pfMETNoHF_T1JESUp_);
+  tree_->Branch("pfMETNoHF_T1JESDo",    &pfMETNoHF_T1JESDo_);
+  tree_->Branch("pfMETNoHF_T1MESUp",    &pfMETNoHF_T1MESUp_);
+  tree_->Branch("pfMETNoHF_T1MESDo",    &pfMETNoHF_T1MESDo_);
+  tree_->Branch("pfMETNoHF_T1EESUp",    &pfMETNoHF_T1EESUp_);
+  tree_->Branch("pfMETNoHF_T1EESDo",    &pfMETNoHF_T1EESDo_);
+  tree_->Branch("pfMETNoHF_T1PESUp",    &pfMETNoHF_T1PESUp_);
+  tree_->Branch("pfMETNoHF_T1PESDo",    &pfMETNoHF_T1PESDo_);
+  tree_->Branch("pfMETNoHF_T1TESUp",    &pfMETNoHF_T1TESUp_);
+  tree_->Branch("pfMETNoHF_T1TESDo",    &pfMETNoHF_T1TESDo_);
+  tree_->Branch("pfMETNoHF_T1UESUp",    &pfMETNoHF_T1UESUp_);
+  tree_->Branch("pfMETNoHF_T1UESDo",    &pfMETNoHF_T1UESDo_);
+  tree_->Branch("pfMETNoHFPhi_T1JESUp", &pfMETNoHFPhi_T1JESUp_);
+  tree_->Branch("pfMETNoHFPhi_T1JESDo", &pfMETNoHFPhi_T1JESDo_);
+  tree_->Branch("pfMETNoHFPhi_T1UESUp", &pfMETNoHFPhi_T1UESUp_);
+  tree_->Branch("pfMETNoHFPhi_T1UESDo", &pfMETNoHFPhi_T1UESDo_);
+  
 
   if (doGenParticles_) {
     tree_->Branch("nPUInfo",      &nPUInfo_);
     tree_->Branch("nPU",          &nPU_);
     tree_->Branch("puBX",         &puBX_);
     tree_->Branch("puTrue",       &puTrue_);
-
+    tree_->Branch("genMET",       &genMET_);
+    tree_->Branch("genMETPhi",    &genMETPhi_);
+    tree_->Branch("genMETNoHF",       &genMETNoHF_);
+    tree_->Branch("genMETNoHFPhi",    &genMETNoHFPhi_);
     tree_->Branch("nMC",          &nMC_);
     tree_->Branch("mcPID",        &mcPID_);
     tree_->Branch("mcStatus",     &mcStatus_);
@@ -710,9 +763,11 @@ void ggHiNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es)
     }
 
 
-  fillElectrons(e, es, pv);
-  fillPhotons(e, es, pv);
+  //fillElectrons(e, es, pv);
+  //fillPhotons(e, es, pv);
   fillMuons(e, es, pv);
+  fillMet(e,es);
+  fillMetNoHF(e,es);
 
   tree_->Fill();
 }
@@ -1364,6 +1419,130 @@ void ggHiNtuplizer::fillMuons(const edm::Event& e, const edm::EventSetup& es, ma
 
     nMu_++;
   } // muons loop
+}
+
+void ggHiNtuplizer::fillMet(const edm::Event& e, const edm::EventSetup& es) {
+
+  edm::Handle<edm::View<pat::MET> > pfMETHandle;
+  e.getByToken(pfMETlabel_, pfMETHandle);
+
+  genMET_      = -999;
+  genMETPhi_   = -999;
+  pfMET_       = -999;
+  pfMETPhi_    = -999;
+  pfMETsumEt_  = -999;
+  pfMETmEtSig_ = -999;
+  pfMETSig_    = -999;
+  pfMET_T1JERUp_ = -999;
+  pfMET_T1JERDo_ = -999;
+  pfMET_T1JESUp_ = -999;
+  pfMET_T1JESDo_ = -999;
+  pfMET_T1UESUp_ = -999;
+  pfMET_T1UESDo_ = -999;
+  pfMETPhi_T1JESUp_ = -999;
+  pfMETPhi_T1JESDo_ = -999;
+  pfMETPhi_T1UESUp_ = -999;
+  pfMETPhi_T1UESDo_ = -999;
+
+  if (pfMETHandle.isValid()) {
+    const pat::MET *pfMET = 0;
+    pfMET = &(pfMETHandle->front());
+
+    pfMET_       = pfMET->et();
+    pfMETPhi_    = pfMET->phi();
+    pfMETsumEt_  = pfMET->sumEt();
+    pfMETmEtSig_ = (pfMET->mEtSig() < 1.e10) ? pfMET->mEtSig() : 0;
+    pfMETSig_    = (pfMET->significance() < 1.e10) ? pfMET->significance() : 0;;
+
+    // Type1MET uncertainties =======================================
+    //pfMET_T1JERUp_ = pfMET->shiftedPt(pat::MET::JetResUp);
+    //pfMET_T1JERDo_ = pfMET->shiftedPt(pat::MET::JetResDown);
+    pfMET_T1JESUp_ = pfMET->shiftedPt(pat::MET::JetEnUp);
+    pfMET_T1JESDo_ = pfMET->shiftedPt(pat::MET::JetEnDown);
+    pfMET_T1MESUp_ = pfMET->shiftedPt(pat::MET::MuonEnUp);
+    pfMET_T1MESDo_ = pfMET->shiftedPt(pat::MET::MuonEnDown);
+    pfMET_T1EESUp_ = pfMET->shiftedPt(pat::MET::ElectronEnUp);
+    pfMET_T1EESDo_ = pfMET->shiftedPt(pat::MET::ElectronEnDown);
+    pfMET_T1PESUp_ = pfMET->shiftedPt(pat::MET::PhotonEnUp);
+    pfMET_T1PESDo_ = pfMET->shiftedPt(pat::MET::PhotonEnDown);
+    pfMET_T1TESUp_ = pfMET->shiftedPt(pat::MET::TauEnUp);
+    pfMET_T1TESDo_ = pfMET->shiftedPt(pat::MET::TauEnDown);
+
+    pfMET_T1UESUp_ = pfMET->shiftedPt(pat::MET::UnclusteredEnUp);
+    pfMET_T1UESDo_ = pfMET->shiftedPt(pat::MET::UnclusteredEnDown);
+    
+    pfMETPhi_T1JESUp_ = pfMET->shiftedPhi(pat::MET::JetEnUp);
+    pfMETPhi_T1JESDo_ = pfMET->shiftedPhi(pat::MET::JetEnDown);
+    pfMETPhi_T1UESUp_ = pfMET->shiftedPhi(pat::MET::UnclusteredEnUp);
+    pfMETPhi_T1UESDo_ = pfMET->shiftedPhi(pat::MET::UnclusteredEnDown);
+
+    if (!e.isRealData()) {
+      genMET_    = pfMET->genMET()->et();
+      genMETPhi_ = pfMET->genMET()->phi();
+    }
+  }
+}
+
+void ggHiNtuplizer::fillMetNoHF(const edm::Event& e, const edm::EventSetup& es) {
+
+  edm::Handle<edm::View<pat::MET> > pfMETNoHFHandle;
+  e.getByToken(pfMETNoHFlabel_, pfMETNoHFHandle);
+
+  genMETNoHF_      = -999;
+  genMETNoHFPhi_   = -999;
+  pfMETNoHF_       = -999;
+  pfMETNoHFPhi_    = -999;
+  pfMETNoHFsumEt_  = -999;
+  pfMETNoHFmEtSig_ = -999;
+  pfMETNoHFSig_    = -999;
+  pfMETNoHF_T1JERUp_ = -999;
+  pfMETNoHF_T1JERDo_ = -999;
+  pfMETNoHF_T1JESUp_ = -999;
+  pfMETNoHF_T1JESDo_ = -999;
+  pfMETNoHF_T1UESUp_ = -999;
+  pfMETNoHF_T1UESDo_ = -999;
+  pfMETNoHFPhi_T1JESUp_ = -999;
+  pfMETNoHFPhi_T1JESDo_ = -999;
+  pfMETNoHFPhi_T1UESUp_ = -999;
+  pfMETNoHFPhi_T1UESDo_ = -999;
+
+  if (pfMETNoHFHandle.isValid()) {
+    const pat::MET *pfMETNoHF = 0;
+    pfMETNoHF = &(pfMETNoHFHandle->front());
+
+    pfMETNoHF_       = pfMETNoHF->et();
+    pfMETNoHFPhi_    = pfMETNoHF->phi();
+    pfMETNoHFsumEt_  = pfMETNoHF->sumEt();
+    pfMETNoHFmEtSig_ = (pfMETNoHF->mEtSig() < 1.e10) ? pfMETNoHF->mEtSig() : 0;
+    pfMETNoHFSig_    = (pfMETNoHF->significance() < 1.e10) ? pfMETNoHF->significance() : 0;;
+
+    // Type1MET uncertainties =======================================
+    //pfMETNoHF_T1JERUp_ = pfMETNoHF->shiftedPt(pat::MET::JetResUp);
+    //pfMETNoHF_T1JERDo_ = pfMETNoHF->shiftedPt(pat::MET::JetResDown);
+    pfMETNoHF_T1JESUp_ = pfMETNoHF->shiftedPt(pat::MET::JetEnUp);
+    pfMETNoHF_T1JESDo_ = pfMETNoHF->shiftedPt(pat::MET::JetEnDown);
+    pfMETNoHF_T1MESUp_ = pfMETNoHF->shiftedPt(pat::MET::MuonEnUp);
+    pfMETNoHF_T1MESDo_ = pfMETNoHF->shiftedPt(pat::MET::MuonEnDown);
+    pfMETNoHF_T1EESUp_ = pfMETNoHF->shiftedPt(pat::MET::ElectronEnUp);
+    pfMETNoHF_T1EESDo_ = pfMETNoHF->shiftedPt(pat::MET::ElectronEnDown);
+    pfMETNoHF_T1PESUp_ = pfMETNoHF->shiftedPt(pat::MET::PhotonEnUp);
+    pfMETNoHF_T1PESDo_ = pfMETNoHF->shiftedPt(pat::MET::PhotonEnDown);
+    pfMETNoHF_T1TESUp_ = pfMETNoHF->shiftedPt(pat::MET::TauEnUp);
+    pfMETNoHF_T1TESDo_ = pfMETNoHF->shiftedPt(pat::MET::TauEnDown);
+
+    pfMETNoHF_T1UESUp_ = pfMETNoHF->shiftedPt(pat::MET::UnclusteredEnUp);
+    pfMETNoHF_T1UESDo_ = pfMETNoHF->shiftedPt(pat::MET::UnclusteredEnDown);
+    
+    pfMETNoHFPhi_T1JESUp_ = pfMETNoHF->shiftedPhi(pat::MET::JetEnUp);
+    pfMETNoHFPhi_T1JESDo_ = pfMETNoHF->shiftedPhi(pat::MET::JetEnDown);
+    pfMETNoHFPhi_T1UESUp_ = pfMETNoHF->shiftedPhi(pat::MET::UnclusteredEnUp);
+    pfMETNoHFPhi_T1UESDo_ = pfMETNoHF->shiftedPhi(pat::MET::UnclusteredEnDown);
+
+    if (!e.isRealData()) {
+      genMETNoHF_    = pfMETNoHF->genMET()->et();
+      genMETNoHFPhi_ = pfMETNoHF->genMET()->phi();
+    }
+  }
 }
 
 DEFINE_FWK_MODULE(ggHiNtuplizer);

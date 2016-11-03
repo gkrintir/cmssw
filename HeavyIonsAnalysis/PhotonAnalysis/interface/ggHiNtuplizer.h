@@ -18,6 +18,7 @@
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
 
 using namespace std;
 
@@ -37,6 +38,8 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    void fillElectrons    (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
    void fillPhotons      (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
    void fillMuons        (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
+   void fillMet          (const edm::Event&, const edm::EventSetup&);
+   void fillMetNoHF      (const edm::Event&, const edm::EventSetup&);
 
    // Et and pT sums
    float getGenCalIso(edm::Handle<vector<reco::GenParticle> >&, reco::GenParticleCollection::const_iterator, float dRMax, bool removeMu, bool removeNu);
@@ -68,6 +71,8 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    edm::EDGetTokenT<edm::View<reco::PFCandidate> >    pfCollection_;
    edm::EDGetTokenT<edm::ValueMap<reco::VoronoiBackground> > voronoiBkgCalo_;
    edm::EDGetTokenT<edm::ValueMap<reco::VoronoiBackground> > voronoiBkgPF_;
+   edm::EDGetTokenT<edm::View<pat::MET> > pfMETlabel_;
+   edm::EDGetTokenT<edm::View<pat::MET> > pfMETNoHFlabel_;
 
    EffectiveAreas effectiveAreas_;
 
@@ -85,6 +90,65 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    vector<int>    puBX_;
    vector<float>  puTrue_;
 
+   //MET
+   float genMET_;
+   float genMETPhi_;
+   float pfMET_;
+   float pfMETPhi_;
+   float pfMETsumEt_;
+   float pfMETmEtSig_;
+   float pfMETSig_;
+   float pfMET_T1JERUp_;
+   float pfMET_T1JERDo_;
+   float pfMET_T1JESUp_;
+   float pfMET_T1JESDo_;
+   float pfMET_T1MESUp_;
+   float pfMET_T1MESDo_;
+   float pfMET_T1EESUp_;
+   float pfMET_T1EESDo_;
+   float pfMET_T1PESUp_;
+   float pfMET_T1PESDo_;
+   float pfMET_T1TESUp_;
+   float pfMET_T1TESDo_;
+   float pfMET_T1UESUp_;
+   float pfMET_T1UESDo_;
+   float pfMET_T1TxyPhi_;
+   float pfMET_T1TxyPt_;
+   float pfMETPhi_T1JESUp_;
+   float pfMETPhi_T1JESDo_;
+   float pfMETPhi_T1UESUp_;
+   float pfMETPhi_T1UESDo_;
+   
+   //METnoHF
+   float genMETNoHF_;
+   float genMETNoHFPhi_;
+   float pfMETNoHF_;
+   float pfMETNoHFPhi_;
+   float pfMETNoHFsumEt_;
+   float pfMETNoHFmEtSig_;
+   float pfMETNoHFSig_;
+   float pfMETNoHF_T1JERUp_;
+   float pfMETNoHF_T1JERDo_;
+   float pfMETNoHF_T1JESUp_;
+   float pfMETNoHF_T1JESDo_;
+   float pfMETNoHF_T1MESUp_;
+   float pfMETNoHF_T1MESDo_;
+   float pfMETNoHF_T1EESUp_;
+   float pfMETNoHF_T1EESDo_;
+   float pfMETNoHF_T1PESUp_;
+   float pfMETNoHF_T1PESDo_;
+   float pfMETNoHF_T1TESUp_;
+   float pfMETNoHF_T1TESDo_;
+   float pfMETNoHF_T1UESUp_;
+   float pfMETNoHF_T1UESDo_;
+   float pfMETNoHF_T1TxyPhi_;
+   float pfMETNoHF_T1TxyPt_;
+   float pfMETNoHFPhi_T1JESUp_;
+   float pfMETNoHFPhi_T1JESDo_;
+   float pfMETNoHFPhi_T1UESUp_;
+   float pfMETNoHFPhi_T1UESDo_;
+
+   
    // reco::GenParticle
    Int_t          nMC_;
    vector<int>    mcPID_;

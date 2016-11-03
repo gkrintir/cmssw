@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 pileupVertexFilter  = cms.EDFilter('PAPileUpVertexFilter',
-    vtxSrc = cms.InputTag("offlinePrimaryVertices"),
+    vtxSrc = cms.InputTag("offlineSlimmedPrimaryVertices"),
     doDzNtrkCut = cms.bool(True),
     doDxyDzCut = cms.bool(False),
     doSurfaceCut = cms.bool(False),
