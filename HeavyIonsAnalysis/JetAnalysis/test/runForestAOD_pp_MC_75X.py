@@ -59,7 +59,7 @@ process = overrideJEC_pp5020(process)
 #####################################################################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName=cms.string("HiForestAOD.root"))
+                                   fileName=cms.string("HiForestMiniAOD.root"))
 
 #####################################################################################
 # Additional Reconstruction and Analysis: Main Body

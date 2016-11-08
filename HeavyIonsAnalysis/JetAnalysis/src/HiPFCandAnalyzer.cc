@@ -78,6 +78,8 @@ HiPFCandAnalyzer::HiPFCandAnalyzer(const edm::ParameterSet& iConfig)
 
   doMC_ = iConfig.getUntrackedParameter<bool>("doMC",false);
 
+  std::cout << "doMC_ = " << doMC_ << std::endl;
+
   if(doMC_){
     genLabel_ = consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genLabel"));
   }
