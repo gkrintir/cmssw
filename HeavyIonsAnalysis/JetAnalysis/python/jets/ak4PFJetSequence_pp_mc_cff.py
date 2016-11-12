@@ -199,37 +199,37 @@ ak4PFJetAnalyzer = inclusiveJetAnalyzer.clone(jetTag = cms.InputTag("ak4PFpatJet
 ak4PFJetSequence_mc = cms.Sequence(
                                                   #ak4PFclean
                                                   #*
-                                                  ak4PFmatch
-                                                  *
-                                                  ak4PFparton
-                                                  *
-                                                  ak4PFcorr
-                                                  *
+                                                  #ak4PFmatch
+                                                  #*
+                                                  #ak4PFparton
+                                                  #*
+                                                  #ak4PFcorr
+                                                  #*
                                                   #ak4PFJetID
                                                   #*
-                                                  ak4PFPatJetFlavourIdLegacy
+                                                  #ak4PFPatJetFlavourIdLegacy
                                                   #*
 			                          #ak4PFPatJetFlavourId  # Use legacy algo till PU implemented
-                                                  *
-                                                  ak4PFJetTracksAssociatorAtVertex
-                                                  *
-                                                  ak4PFJetBtagging
-                                                  *
-                                                  ak4PFpatJetsWithBtagging
-                                                  *
+                                                  #*
+                                                  #ak4PFJetTracksAssociatorAtVertex
+                                                  #*
+                                                  #ak4PFJetBtagging
+                                                  #*
+                                                  #ak4PFpatJetsWithBtagging
+                                                  #*
                                                   ak4PFJetAnalyzer
                                                   )
 
-ak4PFJetSequence_data = cms.Sequence(ak4PFcorr
-                                                    *
+ak4PFJetSequence_data = cms.Sequence(#ak4PFcorr
+                                                    #*
                                                     #ak4PFJetID
                                                     #*
-                                                    ak4PFJetTracksAssociatorAtVertex
-                                                    *
-                                                    ak4PFJetBtagging
-                                                    *
-                                                    ak4PFpatJetsWithBtagging
-                                                    *
+                                                    #ak4PFJetTracksAssociatorAtVertex
+                                                    #*
+                                                    #ak4PFJetBtagging
+                                                    #*
+                                                    #ak4PFpatJetsWithBtagging
+                                                    #*
                                                     ak4PFJetAnalyzer
                                                     )
 

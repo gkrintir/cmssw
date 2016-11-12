@@ -90,8 +90,8 @@ def miniAOD_customizeCommon(process):
     # and estimate systematic uncertainties on MET
     from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncForMiniAODProduction
     runMetCorAndUncForMiniAODProduction(process, metType="PF",
-                                        jetCollUnskimmed="patJets",
-                                        jetColl="selectedPatJets")
+                                        jetCollUnskimmed="patJets")#,
+                                        #jetColl="selectedPatJets")
     
     #caloMET computation
     from PhysicsTools.PatAlgos.tools.metTools import addMETCollection
@@ -107,7 +107,7 @@ def miniAOD_customizeCommon(process):
                                      )
     runMetCorAndUncForMiniAODProduction(process,
                                         pfCandColl=cms.InputTag("noHFCands"),
-                                        recomputeMET=True, #needed for HF removal
+                                        recoMetFromPFCs=True, #needed for HF removal
                                         postfix="NoHF"
                                         )
     process.load('PhysicsTools.PatAlgos.slimming.slimmedMETs_cfi')
@@ -196,7 +196,7 @@ def miniAOD_customizeCommon(process):
         cms.InputTag('reducedEgamma','reducedGedPhotons')
     for idmod in photon_ids:
         setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection,None,False)
-    
+    '''
     # Adding puppi jets
     process.load('CommonTools.PileupAlgos.Puppi_cff')
     process.load('RecoJets.JetProducers.ak4PFJetsPuppi_cfi')
@@ -279,7 +279,7 @@ def miniAOD_customizeCommon(process):
     del process.slimmedMETsPuppi.tXYUncForT1Smear
     del process.slimmedMETsPuppi.tXYUncForT01Smear
     del process.slimmedMETsPuppi.caloMET
-
+    '''
 
 def miniAOD_customizeMC(process):
     #slimmed pileup information

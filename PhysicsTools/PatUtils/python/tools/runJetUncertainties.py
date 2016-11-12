@@ -151,6 +151,7 @@ class RunJetUncertainties(JetMEtUncertaintyTools):
         
         # insert metUncertaintySequence into patDefaultSequence
         if addToPatDefaultSequence:
+            print '##########', process
             if not hasattr(process, "patDefaultSequence"):
                 raise ValueError("PAT default sequence is not defined !!")
             process.patDefaultSequence += jetUncertaintySequence        

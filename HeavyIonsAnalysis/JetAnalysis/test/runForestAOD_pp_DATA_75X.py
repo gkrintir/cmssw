@@ -7,6 +7,9 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('HiForest')
 process.options = cms.untracked.PSet()
 
+#process.options.allowUnscheduled = cms.untracked.bool(True)
+#process.options.wantSummary = cms.untracked.bool(False) 
+
 #####################################################################################
 # HiForest labelling info
 #####################################################################################
@@ -25,7 +28,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-                                '/store/data/Run2015E/HighPtJet80/AOD/PromptReco-v1/000/262/173/00000/3E8293B5-9894-E511-90E8-02163E011FA1.root'                        
+                                'file:/afs/cern.ch/work/g/gkrintir/private/HI/CMSSW_7_5_8_patch3/src/PhysicsTools/PatAlgos/test/4A649A7F-308E-E511-BB4A-02163E013859.root'                        
                                 #'/store/data/Run2015E/HighPtJet80/AOD/PromptReco-v1/000/262/272/00000/803A4255-7696-E511-B178-02163E0142DD.root'
                             )
 )

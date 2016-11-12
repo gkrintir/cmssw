@@ -1,0 +1,2 @@
+/store/user/gkrintir/TopHI/WWTo2L2Nu_TuneCUETP8M1_5020GeV-powheg_HINppWinter16DR-75X_mcRun2_asymptotic_ppAt5TeV_v3-v1miniAODv1/WWTo2L2Nu_TuneCUETP8M1_5020GeV-powheg/crab_TopHI/161031_212352/0000/miniAOD-prod_PAT_1.root
+/store/user/gkrintir/TopHI/WWTo2L2Nu_TuneCUETP8M1_5020GeV-powheg_HINppWinter16DR-75X_mcRun2_asymptotic_ppAt5TeV_v3-v1miniAODv1/WWTo2L2Nu_TuneCUETP8M1_5020GeV-powheg/crab_TopHI/161031_212352/0000/miniAOD-prod_PAT_2.root

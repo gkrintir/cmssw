@@ -101,6 +101,7 @@ private:
   // Event Info
   edm::InputTag pfCandidateLabel_;
   edm::EDGetTokenT<reco::PFCandidateCollection> pfCandidatePF_;
+  //edm::EDGetTokenT<pat::PackedCandidatCollection> pfCandidatePF_;
   edm::EDGetTokenT<reco::CandidateView> pfCandidateView_;
   edm::EDGetTokenT<reco::GenParticleCollection> genLabel_;
   edm::EDGetTokenT<pat::JetCollection> jetLabel_;
