@@ -19,11 +19,11 @@ options.register(
 )
 
 options.register(
-    'outputFileName',
-    "miniAOD-prod_PAT.root",
+    'lumiMask',
+    "False",
     VarParsing.multiplicity.singleton,
-    VarParsing.varType.string,
-    "name for the output file"
+    VarParsing.varType.bool,
+    "enable lumiMask"
 )
 
 options.parseArguments()
@@ -41,7 +41,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1)
+    input = cms.untracked.int32(-1)
 )
 
 # Input source
@@ -64,6 +64,12 @@ process.configurationMetadata = cms.untracked.PSet(
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
+
+#lumi Mask
+import FWCore.PythonUtilities.LumiList as LumiList
+if options.lumiMask==True:
+    print 'mpika lu!!!!'
+    process.source.lumisToProcess = LumiList.LumiList(filename = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/5TeV/Cert_262081-262328_5TeV_PromptReco_Collisions15_25ns_JSON.txt').getVLuminosityBlockRange()
 
 # Output definition
 

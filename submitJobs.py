@@ -14,6 +14,7 @@ interval = 1 # number files to be processed in a single job, take care to split 
 OutputFileNames = "miniAOD-prod_PAT" # base of the output file name, they will be saved in res directory
 ScriptName = "miniAOD-prod_PAT.py" # script to be used with cmsRun
 FileList = "List.txt" # list with all the file directories
+LumiMask = "True" # apply lumimask
 queue = "1nd" # give bsub queue -- 8nm (8 minutes), 1nh (1 hour), 8nh, 1nd (1day), 2nd, 1nw (1 week), 2nw 
 ########   customization end   #########
 
@@ -42,13 +43,13 @@ for x in range(1, int(NumberOfJobs)+1):
       fout.write("source /afs/cern.ch/cms/cmsset_default.sh\n")
       fout.write("cd "+str(path)+"\n")
       fout.write("cmsenv\n")
-      fout.write("cmsRun "+ScriptName+" outputFile='res/"+OutputFileNames+"_"+str(x)+".root' files='tmp/"+str(x)+"/list.txt'\n")
+      fout.write("cmsRun "+ScriptName+" outputFile='res/"+OutputFileNames+"_"+str(x)+".root' files='tmp/"+str(x)+"/list.txt' lumiMask="+LumiMask+"\n")
       fout.write("echo 'STOP---------------'\n")
       fout.write("echo\n")
       fout.write("echo\n")
    os.system("chmod 755 job.sh")
    #os.chdir("../..")
-  
+ 
    ###### sends bjobs ######
    os.system("bsub -q "+queue+" -o logs job.sh")
    print "job nr " + str(x) + " submitted"
