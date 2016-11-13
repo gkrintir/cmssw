@@ -68,7 +68,6 @@ process.configurationMetadata = cms.untracked.PSet(
 #lumi Mask
 import FWCore.PythonUtilities.LumiList as LumiList
 if options.lumiMask==True:
-    print 'mpika lu!!!!'
     process.source.lumisToProcess = LumiList.LumiList(filename = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/5TeV/Cert_262081-262328_5TeV_PromptReco_Collisions15_25ns_JSON.txt').getVLuminosityBlockRange()
 
 # Output definition
