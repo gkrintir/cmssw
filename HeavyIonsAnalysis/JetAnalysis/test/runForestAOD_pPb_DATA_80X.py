@@ -27,7 +27,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-				'file:/afs/cern.ch/user/k/kjung/run2Validation/HLTchecks/CMSSW_8_0_22/src/pPb_5TeVEpos_RECO.root'
+				'file:/afs/cern.ch/work/g/gkrintir/private/HI/MET/CMSSW_8_0_23/src/HeavyIonsAnalysis/JetAnalysis/test/samples/C23C1F65-5EAE-E611-A754-02163E014256.root'
 				)
 )
 
@@ -142,6 +142,22 @@ process.ggHiNtuplizer.VtxLabel           = cms.InputTag("offlinePrimaryVertices"
 process.ggHiNtuplizer.particleFlowCollection = cms.InputTag("particleFlow")
 process.ggHiNtuplizer.doVsIso            = cms.bool(False)
 process.ggHiNtuplizer.doElectronVID      = cms.bool(True)
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel = cms.InputTag("patPFMetT1","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_EESUp = cms.InputTag("patPFMetT1ElectronEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_EESDo = cms.InputTag("patPFMetT1ElectronEnDown","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_MESUp = cms.InputTag("patPFMetT1MuonEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_MESDo = cms.InputTag("patPFMetT1MuonEnDown","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_PESUp = cms.InputTag("patPFMetT1PhotonEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_PESDo = cms.InputTag("patPFMetT1PhotonEnDown","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_TESUp = cms.InputTag("patPFMetT1TauEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_TESDo = cms.InputTag("patPFMetT1TauEnDown","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_UESUp = cms.InputTag("patPFMetT1UnclusteredEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_UESDo = cms.InputTag("patPFMetT1UnclusteredEnDown","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_JESUp = cms.InputTag("patPFMetT1JetEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_JESDo = cms.InputTag("patPFMetT1JetEnDown","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_JERUp = cms.InputTag("patPFMetT1JetResEnUp","","HiForest")
+process.ggHiNtuplizer.newCorrectedSlimmedMetLabel_JERDo = cms.InputTag("patPFMetT1JetResEnDown","","HiForest")
+
 process.ggHiNtuplizerGED = process.ggHiNtuplizer.clone(recoPhotonSrc = cms.InputTag('gedPhotons'),
                                                        recoPhotonHiIsolationMap = cms.InputTag('photonIsolationHIProducerppGED'))
 
@@ -207,6 +223,18 @@ process.ana_step = cms.Path(process.hltanalysis *
 
 #####################################################################################
 
+process.out = cms.OutputModule(
+    "PoolOutputModule",
+    fileName = cms.untracked.string("test.root"),
+    #SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
+    outputCommands = cms.untracked.vstring(
+        "keep *_*patMets_*_*",
+        "keep *_*patMetPhi_*_*",
+        "keep *_*patPFMetT1*_*_*"
+        )
+)
+
+
 #########################
 # Event Selection
 #########################
@@ -247,3 +275,43 @@ process.pVertexFilterCutEandG = cms.Path(process.pileupVertexFilterCutEandG)
 process.pAna = cms.EndPath(process.skimanalysis)
 
 # Customization
+process.o = cms.EndPath(process.out)
+process.schedule = cms.Schedule(process.ana_step,process.o  )
+from FWCore.ParameterSet.Utilities import convertToUnscheduled
+process=convertToUnscheduled(process)
+from FWCore.ParameterSet.Utilities import cleanUnscheduled
+process=cleanUnscheduled(process)
+
+
+
+from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMETCorrectionsAndUncertainties
+
+
+import PhysicsTools.PatAlgos.tools.helpers as configtools
+
+process.load("PhysicsTools.PatAlgos.slimming.slimming_cff")
+process.load("PhysicsTools.PatAlgos.producersLayer1.jetProducer_cff")
+process.load("PhysicsTools.PatAlgos.selectionLayer1.jetSelector_cfi")
+process.load("PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff")
+process.load("PhysicsTools.PatAlgos.selectionLayer1.selectedPatCandidates_cff")
+process.load("PhysicsTools.PatAlgos.cleaningLayer1.cleanPatCandidates_cff")
+process.load("PhysicsTools.PatAlgos.selectionLayer1.countPatCandidates_cff")
+
+runOnData=True #data/MC switch
+usePrivateSQlite=False #use external JECs (sqlite file)
+useHFCandidates=False #create an additionnal NoHF slimmed MET collection if the option is set to false
+redoPuppi=False # rebuild puppiMET
+
+
+
+runMETCorrectionsAndUncertainties(process,
+                                  correctionLevel=["T1"],
+                                  onMiniAOD=False,
+                                  runOnData=runOnData,
+                                  pfCandCollection=cms.InputTag('particleFlow')
+                                  )
+
+
+if runOnData:
+  from PhysicsTools.PatAlgos.tools.coreTools import runOnData
+  runOnData( process,  outputModules = [])

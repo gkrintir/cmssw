@@ -18,6 +18,9 @@
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/METReco/interface/PFMET.h"
+#include "DataFormats/METReco/interface/PFMETCollection.h"
 
 using namespace std;
 
@@ -37,7 +40,7 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    void fillElectrons    (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
    void fillPhotons      (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
    void fillMuons        (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
-
+   void fillMet          (const edm::Event&, const edm::EventSetup&);
    // Et and pT sums
    float getGenCalIso(edm::Handle<vector<reco::GenParticle> >&, reco::GenParticleCollection::const_iterator, float dRMax, bool removeMu, bool removeNu);
    float getGenTrkIso(edm::Handle<vector<reco::GenParticle> >&, reco::GenParticleCollection::const_iterator, float dRMax);
@@ -68,6 +71,21 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    edm::EDGetTokenT<edm::View<reco::PFCandidate> >    pfCollection_;
    edm::EDGetTokenT<edm::ValueMap<reco::VoronoiBackground> > voronoiBkgCalo_;
    edm::EDGetTokenT<edm::ValueMap<reco::VoronoiBackground> > voronoiBkgPF_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_EESUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_EESDo_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_MESUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_MESDo_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_PESUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_PESDo_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_TESUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_TESDo_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_UESUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_UESDo_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_JESUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_JESDo_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_JERUp_;
+   edm::EDGetTokenT<edm::View<pat::MET> > newMetLabel_JERDo_;
 
    EffectiveAreas effectiveAreas_;
 
@@ -84,6 +102,88 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    vector<int>    nPU_;
    vector<int>    puBX_;
    vector<float>  puTrue_;
+
+   //MET                                                                                                                                                                                                    
+   float pfMET_;
+   float pfMETPhi_;
+   float pfMETsumEt_;
+   float pfMETmEtSig_;
+   float pfMETSig_;
+   //MET Variations
+   float pfMET_JERUp_;
+   float pfMET_JERDo_;
+   float pfMET_JESUp_;
+   float pfMET_JESDo_;
+   float pfMET_MESUp_;
+   float pfMET_MESDo_;
+   float pfMET_EESUp_;
+   float pfMET_EESDo_;
+   float pfMET_PESUp_;
+   float pfMET_PESDo_;
+   float pfMET_TESUp_;
+   float pfMET_TESDo_;
+   float pfMET_UESUp_;
+   float pfMET_UESDo_;
+   
+   float pfMETPhi_JERUp_;
+   float pfMETPhi_JERDo_;
+   float pfMETPhi_JESUp_;
+   float pfMETPhi_JESDo_;
+   float pfMETPhi_MESUp_;
+   float pfMETPhi_MESDo_;
+   float pfMETPhi_EESUp_;
+   float pfMETPhi_EESDo_;
+   float pfMETPhi_PESUp_;
+   float pfMETPhi_PESDo_;
+   float pfMETPhi_TESUp_;
+   float pfMETPhi_TESDo_;
+   float pfMETPhi_UESUp_;
+   float pfMETPhi_UESDo_;
+   
+   float pfMETsumEt_JERUp_;
+   float pfMETsumEt_JERDo_;
+   float pfMETsumEt_JESUp_;
+   float pfMETsumEt_JESDo_;
+   float pfMETsumEt_MESUp_;
+   float pfMETsumEt_MESDo_;
+   float pfMETsumEt_EESUp_;
+   float pfMETsumEt_EESDo_;
+   float pfMETsumEt_PESUp_;
+   float pfMETsumEt_PESDo_;
+   float pfMETsumEt_TESUp_;
+   float pfMETsumEt_TESDo_;
+   float pfMETsumEt_UESUp_;
+   float pfMETsumEt_UESDo_;
+   
+   float pfMETmEtSig_JERUp_;
+   float pfMETmEtSig_JERDo_;
+   float pfMETmEtSig_JESUp_;
+   float pfMETmEtSig_JESDo_;
+   float pfMETmEtSig_MESUp_;
+   float pfMETmEtSig_MESDo_;
+   float pfMETmEtSig_EESUp_;
+   float pfMETmEtSig_EESDo_;
+   float pfMETmEtSig_PESUp_;
+   float pfMETmEtSig_PESDo_;
+   float pfMETmEtSig_TESUp_;
+   float pfMETmEtSig_TESDo_;
+   float pfMETmEtSig_UESUp_;
+   float pfMETmEtSig_UESDo_;
+   
+   float pfMETSig_JERUp_;
+   float pfMETSig_JERDo_;
+   float pfMETSig_JESUp_;
+   float pfMETSig_JESDo_;
+   float pfMETSig_MESUp_;
+   float pfMETSig_MESDo_;
+   float pfMETSig_EESUp_;
+   float pfMETSig_EESDo_;
+   float pfMETSig_PESUp_;
+   float pfMETSig_PESDo_;
+   float pfMETSig_TESUp_;
+   float pfMETSig_TESDo_;
+   float pfMETSig_UESUp_;
+   float pfMETSig_UESDo_;
 
    // reco::GenParticle
    Int_t          nMC_;
