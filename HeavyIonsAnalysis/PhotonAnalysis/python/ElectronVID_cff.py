@@ -17,6 +17,11 @@ electronLooseID25nsV2  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summ
 electronMediumID25nsV2 = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium")
 electronTightID25nsV2  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
 
+electronMediumMVAID = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90")
+electronTightMVAID  = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80")
+electronHZZMediumMVAID  = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-HZZ-V1-wpLoose")
+
+
 # Effective areas for computing PU correction for isolations
 effAreasConfigFile50ns = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_50ns.txt")
 

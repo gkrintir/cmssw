@@ -27,7 +27,7 @@ process.HiForest.HiForestVersion = cms.string(version)
 process.source = cms.Source("PoolSource",
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck"),
                             fileNames = cms.untracked.vstring(
-				'file:/afs/cern.ch/work/g/gkrintir/private/HI/MET/CMSSW_8_0_23/src/HeavyIonsAnalysis/JetAnalysis/test/samples/C23C1F65-5EAE-E611-A754-02163E014256.root'
+				'file:/afs/cern.ch/work/g/gkrintir/private/HI/MET/CMSSW_8_0_23/src/HeavyIonsAnalysis/JetAnalysis/test/samples/042C3A04-3BAF-E611-9514-02163E0146F9.root'
 				)
 )
 
@@ -172,8 +172,12 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 dataFormat = DataFormat.AOD
 switchOnVIDElectronIdProducer(process, dataFormat)
 
-# define which IDs we want to produce. Check here https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Working_points_for_2016_data_for
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
+# define which cutBased & MVA IDs we want to produce. 
+#Check here for cutBased ID: https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Working_points_for_2016_data_for
+#Check here for MVA ID: https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_recipes_for_2016
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
+                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:

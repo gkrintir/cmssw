@@ -39,6 +39,9 @@ ggHiNtuplizer::ggHiNtuplizer(const edm::ParameterSet& ps):
     eleLooseIdMapToken_     = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("electronLooseID"));
     eleMediumIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("electronMediumID"));
     eleTightIdMapToken_     = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("electronTightID"));
+    eleMediumMVAIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("electronMediumMVAID"));
+    eleTightMVAIdMapToken_     = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("electronTightMVAID"));
+    eleMediumExtraMVAIdMapToken_     = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("electronMediumExtraMVAID"));
   }
   if(useValMapIso_){
     recoPhotonsHiIso_ = consumes<edm::ValueMap<reco::HIPhotonIsolation> > (ps.getParameter<edm::InputTag>("recoPhotonHiIsolationMap"));
@@ -111,7 +114,9 @@ ggHiNtuplizer::ggHiNtuplizer(const edm::ParameterSet& ps):
   tree_->Branch("pfMETPhi_UESUp", &pfMETPhi_UESUp_);
   tree_->Branch("pfMETPhi_UESDo", &pfMETPhi_UESDo_);
 
-  tree_->Branch("pfMETsumEt_JERUp", &pfMETsumEt_JERUp_);                                                                                                                                                     tree_->Branch("pfMETsumEt_JERDo", &pfMETsumEt_JERDo_);                                                                                                                                                     tree_->Branch("pfMETsumEt_JESUp", &pfMETsumEt_JESUp_);
+  tree_->Branch("pfMETsumEt_JERUp", &pfMETsumEt_JERUp_);
+  tree_->Branch("pfMETsumEt_JERDo", &pfMETsumEt_JERDo_);                                                                                                         
+  tree_->Branch("pfMETsumEt_JESUp", &pfMETsumEt_JESUp_);
   tree_->Branch("pfMETsumEt_JESDo", &pfMETsumEt_JESDo_);
   tree_->Branch("pfMETsumEt_MESUp", &pfMETsumEt_MESUp_);
   tree_->Branch("pfMETsumEt_MESDo", &pfMETsumEt_MESDo_);
@@ -125,7 +130,8 @@ ggHiNtuplizer::ggHiNtuplizer(const edm::ParameterSet& ps):
   tree_->Branch("pfMETsumEt_UESDo", &pfMETsumEt_UESDo_);
 
   tree_->Branch("pfMETmEtSig_JERUp", &pfMETmEtSig_JERUp_);                                                                                                                 
-  tree_->Branch("pfMETmEtSig_JERDo", &pfMETmEtSig_JERDo_);                                                                                                                                                   tree_->Branch("pfMETmEtSig_JESUp", &pfMETmEtSig_JESUp_);
+  tree_->Branch("pfMETmEtSig_JERDo", &pfMETmEtSig_JERDo_);                                                                                                      
+  tree_->Branch("pfMETmEtSig_JESUp", &pfMETmEtSig_JESUp_);
   tree_->Branch("pfMETmEtSig_JESDo", &pfMETmEtSig_JESDo_);
   tree_->Branch("pfMETmEtSig_MESUp", &pfMETmEtSig_MESUp_);
   tree_->Branch("pfMETmEtSig_MESDo", &pfMETmEtSig_MESDo_);
@@ -263,6 +269,10 @@ ggHiNtuplizer::ggHiNtuplizer(const edm::ParameterSet& ps):
   tree_->Branch("eleIDLoose",            &eleIDLoose_);
   tree_->Branch("eleIDMedium",           &eleIDMedium_);
   tree_->Branch("eleIDTight",            &eleIDTight_);
+  tree_->Branch("eleMVAIDMedium",        &eleMVAIDMedium_);
+  tree_->Branch("eleMVAIDTight",         &eleMVAIDTight_);
+  tree_->Branch("eleExtraMVAIDMedium",   &eleExtraMVAIDMedium_);
+
   tree_->Branch("elepassConversionVeto", &elepassConversionVeto_);
   tree_->Branch("eleEffAreaTimesRho",    &eleEffAreaTimesRho_);
 
@@ -587,6 +597,10 @@ void ggHiNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es)
   eleIDLoose_           .clear();
   eleIDMedium_          .clear();
   eleIDTight_           .clear();
+  eleMVAIDMedium_       .clear();
+  eleMVAIDTight_        .clear();
+  eleExtraMVAIDMedium_  .clear();
+
   elepassConversionVeto_.clear();
   eleEffAreaTimesRho_   .clear();
 
@@ -997,6 +1011,9 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
   edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
   edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
   edm::Handle<edm::ValueMap<bool> > tight_id_decisions; 
+  edm::Handle<edm::ValueMap<bool> > medium_mvaid_decisions;
+  edm::Handle<edm::ValueMap<bool> > tight_mvaid_decisions;
+  edm::Handle<edm::ValueMap<bool> > medium_extramvaid_decisions;
   if(doVID_){
     // Get the conversions collection
     e.getByToken(conversionsToken_, conversions);
@@ -1014,6 +1031,9 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
     e.getByToken(eleLooseIdMapToken_ ,loose_id_decisions);
     e.getByToken(eleMediumIdMapToken_,medium_id_decisions);
     e.getByToken(eleTightIdMapToken_,tight_id_decisions);
+    e.getByToken(eleMediumMVAIdMapToken_,medium_mvaid_decisions);
+    e.getByToken(eleTightMVAIdMapToken_,tight_mvaid_decisions);
+    e.getByToken(eleMediumExtraMVAIdMapToken_,medium_extramvaid_decisions);
   }
   
 
@@ -1164,14 +1184,23 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
       bool passLooseID  = false;
       bool passMediumID = false;
       bool passTightID  = false;
+      bool passMediumMVAID = false;
+      bool passTightMVAID  = false;
+      bool passMediumExtraMVAID = false;
       if(veto_id_decisions.isValid()) passVetoID   = (*veto_id_decisions)[elePtr];
-      if(veto_id_decisions.isValid()) passLooseID  = (*loose_id_decisions)[elePtr];
-      if(veto_id_decisions.isValid()) passMediumID = (*medium_id_decisions)[elePtr];
-      if(veto_id_decisions.isValid()) passTightID  = (*tight_id_decisions)[elePtr];
+      if(loose_id_decisions.isValid()) passLooseID  = (*loose_id_decisions)[elePtr];
+      if(medium_id_decisions.isValid()) passMediumID = (*medium_id_decisions)[elePtr];
+      if(tight_id_decisions.isValid()) passTightID  = (*tight_id_decisions)[elePtr];
+      if(medium_mvaid_decisions.isValid()) passMediumMVAID = (*medium_mvaid_decisions)[elePtr];
+      if(tight_mvaid_decisions.isValid()) passTightMVAID  = (*tight_mvaid_decisions)[elePtr];
+      if(medium_extramvaid_decisions.isValid()) passMediumExtraMVAID = (*medium_extramvaid_decisions)[elePtr];
       eleIDVeto_            .push_back((int)passVetoID);
       eleIDLoose_           .push_back((int)passLooseID);
       eleIDMedium_          .push_back((int)passMediumID);
       eleIDTight_           .push_back((int)passTightID);
+      eleMVAIDMedium_       .push_back((int)passMediumMVAID);
+      eleMVAIDTight_        .push_back((int)passTightMVAID);
+      eleExtraMVAIDMedium_  .push_back((int)passMediumExtraMVAID);
     }
 
     nEle_++;
@@ -1474,7 +1503,6 @@ void ggHiNtuplizer::fillMet(const edm::Event& e, const edm::EventSetup& es) {
     pfMETmEtSig_ = (pfMET->mEtSig() < 1.e10) ? pfMET->mEtSig() : 0;
     pfMETSig_    = (pfMET->significance() < 1.e10) ? pfMET->significance() : 0;;
 
-    std::cout<< " mpika MERT !!" << pfMET_ << " "<< pfMETPhi_ << " "<< pfMETsumEt_ << " " << pfMETmEtSig_ << " "<< pfMETSig_ << " "  <<std::endl;
   }
   
   edm::Handle<edm::View<pat::MET> > pfMETHandle_EESUp;
