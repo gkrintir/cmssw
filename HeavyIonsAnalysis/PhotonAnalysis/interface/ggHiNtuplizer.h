@@ -61,6 +61,9 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
    edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
    edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
+   edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumMVAIdMapToken_;
+   edm::EDGetTokenT<edm::ValueMap<bool> > eleTightMVAIdMapToken_;
+   edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumExtraMVAIdMapToken_;
    edm::EDGetTokenT<edm::View<reco::Photon> >      recoPhotonsCollection_;
    edm::EDGetTokenT<edm::ValueMap<reco::HIPhotonIsolation> > recoPhotonsHiIso_;
    edm::EDGetTokenT<edm::View<reco::Muon> >        recoMuonsCollection_;
@@ -287,6 +290,9 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    vector<int>    eleIDLoose_;
    vector<int>    eleIDMedium_;
    vector<int>    eleIDTight_;
+   vector<int>    eleMVAIDMedium_;
+   vector<int>    eleMVAIDTight_;
+   vector<int>    eleExtraMVAIDMedium_;
    vector<int>    elepassConversionVeto_;
    vector<float>    eleEffAreaTimesRho_;
 
