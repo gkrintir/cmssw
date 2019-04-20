@@ -135,8 +135,10 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    std::vector<float>  eleEn_;
    std::vector<float>  eleD0_;
    std::vector<float>  eleDz_;
+   std::vector<float>  eleIP3D_;
    std::vector<float>  eleD0Err_;
    std::vector<float>  eleDzErr_;
+   std::vector<float>  eleIP3DErr_;
    std::vector<float>  eleTrkPt_;
    std::vector<float>  eleTrkEta_;
    std::vector<float>  eleTrkPhi_;
@@ -379,6 +381,10 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    std::vector<int>    muIsGood_;
    std::vector<float>  muD0_;
    std::vector<float>  muDz_;
+   std::vector<float>  muIP3D_;
+   std::vector<float>  muD0Err_;
+   std::vector<float>  muDzErr_;
+   std::vector<float>  muIP3DErr_;
    std::vector<float>  muChi2NDF_;
    std::vector<float>  muInnerD0_;
    std::vector<float>  muInnerDz_;
@@ -393,6 +399,15 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    std::vector<float>  muPFPhoIso_;
    std::vector<float>  muPFNeuIso_;
    std::vector<float>  muPFPUIso_;
+   //https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2#Muon_selectors_Since_9_4_X
+   std::vector<int>    muIDSoft_;
+   std::vector<int>    muIDLoose_;
+   std::vector<int>    muIDMedium_;
+   std::vector<int>    muIDMediumPrompt_;
+   std::vector<int>    muIDTight_;
+   std::vector<int>    muIDGlobalHighPt_;
+   std::vector<int>    muIDTrkHighPt_;
+   std::vector<int>    muIDInTime_;
 };
 
 #endif
