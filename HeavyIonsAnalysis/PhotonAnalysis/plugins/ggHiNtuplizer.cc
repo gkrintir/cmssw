@@ -738,7 +738,7 @@ void ggHiNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es)
   e.getByToken(vtxCollection_, vtxHandle);
 
   // best-known primary vertex coordinates
-  math::XYZPoint pv(0, 0, 0);
+  math::XYZPoint pv(0, 0, -999);
   for (const auto& v : *vtxHandle)
     if (!v.isFake()) {
       pv.SetXYZ(v.x(), v.y(), v.z());
@@ -1043,17 +1043,27 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
       *ele, conversions, theBeamSpot->position());
     eleConvVeto_.push_back( (int) passConvVeto );
 
-    //Get PV for the 3DImpact parameter
+    //Get PV (reco::Vertex& vertex) for the 3DImpact parameter
     edm::Handle<std::vector<reco::Vertex> > vtxHandle;
     e.getByToken(vtxCollection_, vtxHandle);
-    const reco::Vertex& vertex = vtxHandle->front();
+    //Initialize with nonphysical values
+    float eleIP3D = -999;
+    float eleIP3DErr = -999;
+    if (!vtxHandle->empty()) {
+      const reco::Vertex& vertex = vtxHandle->front();
     
-    //3DImpact parameter                                                                                                                  
-    edm::ESHandle<TransientTrackBuilder> trackBuilder;
-    es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-    reco::TransientTrack tt = trackBuilder->build(ele->gsfTrack().get());
-    float eleIP3D = IPTools::absoluteImpactParameter3D(tt, vertex).second.value();
-    float eleIP3DErr = IPTools::absoluteImpactParameter3D(tt, vertex).second.error();
+      //3DImpact parameter                                                                                                                  
+      edm::ESHandle<TransientTrackBuilder> trackBuilder;
+      es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+      reco::TransientTrack tt = trackBuilder->build(ele->gsfTrack().get());
+      //additional protection                                                                                    
+      if (std::abs(vertex.x()-pv.x())<= std::numeric_limits<double>::epsilon() &&
+          std::abs(vertex.y()-pv.y())<= std::numeric_limits<double>::epsilon() &&
+          std::abs(vertex.z()-pv.z())<= std::numeric_limits<double>::epsilon()) {
+	eleIP3D = IPTools::absoluteImpactParameter3D(tt, vertex).second.value();
+        eleIP3DErr = IPTools::absoluteImpactParameter3D(tt, vertex).second.error();
+      }
+    }
     eleIP3D_               .push_back(eleIP3D);
     eleIP3DErr_            .push_back(eleIP3DErr);
 
@@ -1497,17 +1507,27 @@ void ggHiNtuplizer::fillMuons(const edm::Event& e, const edm::EventSetup& es, ma
     muD0Err_ .push_back(mu.muonBestTrack()->dxyError());
     muDzErr_ .push_back(mu.muonBestTrack()->dzError());
 
-    //Get PV for the 3DImpact parameter                                                                                                               
+    //Get PV (reco::Vertex& vertex) for the 3DImpact parameter                                                                                                               
     edm::Handle<std::vector<reco::Vertex> > vtxHandle;
     e.getByToken(vtxCollection_, vtxHandle);
-    const reco::Vertex& vertex = vtxHandle->front();
+    //Initialize with nonphysical values                                                                                                                       
+    float muIP3D = -999;
+    float muIP3DErr = -999;
+    if (!vtxHandle->empty()) {
+      const reco::Vertex& vertex = vtxHandle->front();
 
-    //3DImpact parameter   
-    edm::ESHandle<TransientTrackBuilder> trackBuilder;
-    es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-    reco::TransientTrack tt = trackBuilder->build(mu.muonBestTrack().get());
-    float muIP3D = IPTools::absoluteImpactParameter3D(tt, vertex).second.value();
-    float muIP3DErr = IPTools::absoluteImpactParameter3D(tt, vertex).second.error();
+      //3DImpact parameter   
+      edm::ESHandle<TransientTrackBuilder> trackBuilder;
+      es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+      reco::TransientTrack tt = trackBuilder->build(mu.muonBestTrack().get());
+      //additional protection                                                                                   
+      if (std::abs(vertex.x()-pv.x())<= std::numeric_limits<double>::epsilon() &&
+          std::abs(vertex.y()-pv.y())<= std::numeric_limits<double>::epsilon() &&
+          std::abs(vertex.z()-pv.z())<= std::numeric_limits<double>::epsilon()) {
+	muIP3D = IPTools::absoluteImpactParameter3D(tt, vertex).second.value();
+	muIP3DErr = IPTools::absoluteImpactParameter3D(tt, vertex).second.error();
+      }
+    }
     muIP3D_    .push_back(muIP3D);
     muIP3DErr_ .push_back(muIP3DErr);
 
