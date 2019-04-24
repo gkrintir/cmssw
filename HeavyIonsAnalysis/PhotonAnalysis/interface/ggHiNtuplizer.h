@@ -24,6 +24,7 @@
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 
 #include <TTree.h>
 
@@ -40,9 +41,9 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
 
    void fillGenParticles (const edm::Event&);
    void fillGenPileupInfo(const edm::Event&);
-   void fillElectrons    (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
-   void fillPhotons      (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
-   void fillMuons        (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
+   void fillElectrons    (const edm::Event&, const edm::EventSetup&, reco::Vertex& pv);
+   void fillPhotons      (const edm::Event&, const edm::EventSetup&, reco::Vertex& pv);
+   void fillMuons        (const edm::Event&, const edm::EventSetup&, reco::Vertex& pv);
 
    // Et and pT sums
    float getGenCalIso(edm::Handle<std::vector<reco::GenParticle> >&, reco::GenParticleCollection::const_iterator, float dRMax, bool removeMu, bool removeNu);
@@ -83,6 +84,7 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
 
    const CaloGeometry *geo;
    const CaloTopology* topo;
+   const TransientTrackBuilder* tb;
 
    EffectiveAreas effectiveAreas_;
 

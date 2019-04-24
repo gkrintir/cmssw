@@ -9,9 +9,8 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
-#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-#include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
 
 #include "HeavyIonsAnalysis/PhotonAnalysis/interface/GenParticleParentage.h"
 #include "HeavyIonsAnalysis/PhotonAnalysis/interface/ggHiNtuplizer.h"
@@ -738,12 +737,16 @@ void ggHiNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es)
   e.getByToken(vtxCollection_, vtxHandle);
 
   // best-known primary vertex coordinates
-  math::XYZPoint pv(0, 0, -999);
+  reco::Vertex pv(math::XYZPoint(0, 0, -999), math::Error<3>::type());
   for (const auto& v : *vtxHandle)
     if (!v.isFake()) {
-      pv.SetXYZ(v.x(), v.y(), v.z());
+      pv = v;
       break;
     }
+
+  edm::ESHandle<TransientTrackBuilder> trackBuilder;
+  es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+  tb = trackBuilder.product();
 
   if (doRecHitsEB_ || doRecHitsEE_ || doEReg_) {
     edm::ESHandle<CaloGeometry> pGeo;
@@ -931,7 +934,7 @@ float ggHiNtuplizer::getGenTrkIso(edm::Handle<std::vector<reco::GenParticle> > &
   return ptSum;
 }
 
-void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es, math::XYZPoint& pv)
+void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es, reco::Vertex& pv)
 {
   // Fills tree branches with reco GSF electrons.
 
@@ -982,8 +985,8 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
       eleCtfCharge_        .push_back(-99.);
     }
     eleEn_               .push_back(ele->energy());
-    eleD0_               .push_back(ele->gsfTrack()->dxy(pv));
-    eleDz_               .push_back(ele->gsfTrack()->dz(pv));
+    eleD0_               .push_back(ele->gsfTrack()->dxy(pv.position()));
+    eleDz_               .push_back(ele->gsfTrack()->dz(pv.position()));
     eleD0Err_            .push_back(ele->gsfTrack()->dxyError());
     eleDzErr_            .push_back(ele->gsfTrack()->dzError());
     eleTrkPt_            .push_back(ele->gsfTrack()->pt());
@@ -1043,32 +1046,20 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
       *ele, conversions, theBeamSpot->position());
     eleConvVeto_.push_back( (int) passConvVeto );
 
-    //Get PV (reco::Vertex& vertex) for the 3DImpact parameter
-    edm::Handle<std::vector<reco::Vertex> > vtxHandle;
-    e.getByToken(vtxCollection_, vtxHandle);
     //Initialize with nonphysical values
     float eleIP3D = -999;
     float eleIP3DErr = -999;
-    if (!vtxHandle->empty()) {
-      const reco::Vertex& vertex = vtxHandle->front();
-    
-      //3DImpact parameter                                                                                                                  
-      edm::ESHandle<TransientTrackBuilder> trackBuilder;
-      es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-      reco::TransientTrack tt = trackBuilder->build(ele->gsfTrack().get());
-      //additional protection                                                                                    
-      if (std::abs(vertex.x()-pv.x())<= std::numeric_limits<double>::epsilon() &&
-          std::abs(vertex.y()-pv.y())<= std::numeric_limits<double>::epsilon() &&
-          std::abs(vertex.z()-pv.z())<= std::numeric_limits<double>::epsilon()) {
-	eleIP3D = IPTools::absoluteImpactParameter3D(tt, vertex).second.value();
-        eleIP3DErr = IPTools::absoluteImpactParameter3D(tt, vertex).second.error();
-      }
+    if (pv.isValid()) {
+      //3DImpact parameter
+      reco::TransientTrack tt = tb->build(ele->gsfTrack().get());
+      eleIP3D = IPTools::absoluteImpactParameter3D(tt, pv).second.value();
+      eleIP3DErr = IPTools::absoluteImpactParameter3D(tt, pv).second.error();
     }
     eleIP3D_               .push_back(eleIP3D);
     eleIP3DErr_            .push_back(eleIP3DErr);
 
     // calculation on the fly
-    pfIsoCalculator pfIsoCal(e, pfCollection_, pv);
+    pfIsoCalculator pfIsoCal(e, pfCollection_, pv.position());
     if (std::abs(ele->superCluster()->eta()) > 1.566) {
       elePFChIso03_          .push_back(pfIsoCal.getPfIso(*ele, 1, 0.3, 0.015, 0.));
       elePFChIso04_          .push_back(pfIsoCal.getPfIso(*ele, 1, 0.4, 0.015, 0.));
@@ -1178,7 +1169,7 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
   } // electrons loop
 }
 
-void ggHiNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es, math::XYZPoint& pv)
+void ggHiNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es, reco::Vertex& pv)
 {
   // Fills tree branches with photons.
 
@@ -1422,7 +1413,7 @@ void ggHiNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es, 
     }
 
     if (doPfIso_) {
-      pfIsoCalculator pfIso(e, pfCollection_, pv);
+      pfIsoCalculator pfIso(e, pfCollection_, pv.position());
       // particle flow isolation
       pfcIso1.push_back( pfIso.getPfIso(*pho, 1, 0.1, 0.02, 0.0, 0 ));
       pfcIso2.push_back( pfIso.getPfIso(*pho, 1, 0.2, 0.02, 0.0, 0 ));
@@ -1485,7 +1476,7 @@ void ggHiNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es, 
   } // photons loop
 }
 
-void ggHiNtuplizer::fillMuons(const edm::Event& e, const edm::EventSetup& es, math::XYZPoint& pv)
+void ggHiNtuplizer::fillMuons(const edm::Event& e, const edm::EventSetup& es, reco::Vertex& pv)
 {
   // Fills tree branches with reco muons.
 
@@ -1502,31 +1493,19 @@ void ggHiNtuplizer::fillMuons(const edm::Event& e, const edm::EventSetup& es, ma
     muCharge_.push_back(mu.charge());
     muType_  .push_back(mu.type());
     muIsGood_.push_back(muon::isGoodMuon(mu, muon::selectionTypeFromString("TMOneStationTight")));
-    muD0_    .push_back(mu.muonBestTrack()->dxy(pv));
-    muDz_    .push_back(mu.muonBestTrack()->dz(pv));
+    muD0_    .push_back(mu.muonBestTrack()->dxy(pv.position()));
+    muDz_    .push_back(mu.muonBestTrack()->dz(pv.position()));
     muD0Err_ .push_back(mu.muonBestTrack()->dxyError());
     muDzErr_ .push_back(mu.muonBestTrack()->dzError());
 
-    //Get PV (reco::Vertex& vertex) for the 3DImpact parameter                                                                                                               
-    edm::Handle<std::vector<reco::Vertex> > vtxHandle;
-    e.getByToken(vtxCollection_, vtxHandle);
-    //Initialize with nonphysical values                                                                                                                       
+    //Initialize with nonphysical values
     float muIP3D = -999;
     float muIP3DErr = -999;
-    if (!vtxHandle->empty()) {
-      const reco::Vertex& vertex = vtxHandle->front();
-
-      //3DImpact parameter   
-      edm::ESHandle<TransientTrackBuilder> trackBuilder;
-      es.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-      reco::TransientTrack tt = trackBuilder->build(mu.muonBestTrack().get());
-      //additional protection                                                                                   
-      if (std::abs(vertex.x()-pv.x())<= std::numeric_limits<double>::epsilon() &&
-          std::abs(vertex.y()-pv.y())<= std::numeric_limits<double>::epsilon() &&
-          std::abs(vertex.z()-pv.z())<= std::numeric_limits<double>::epsilon()) {
-	muIP3D = IPTools::absoluteImpactParameter3D(tt, vertex).second.value();
-	muIP3DErr = IPTools::absoluteImpactParameter3D(tt, vertex).second.error();
-      }
+    if (pv.isValid()) {
+      //3DImpact parameter
+      reco::TransientTrack tt = tb->build(mu.muonBestTrack().get());
+      muIP3D = IPTools::absoluteImpactParameter3D(tt, pv).second.value();
+      muIP3DErr = IPTools::absoluteImpactParameter3D(tt, pv).second.error();
     }
     muIP3D_    .push_back(muIP3D);
     muIP3DErr_ .push_back(muIP3DErr);
@@ -1550,8 +1529,8 @@ void ggHiNtuplizer::fillMuons(const edm::Event& e, const edm::EventSetup& es, ma
       muPixelHits_   .push_back(-99);
       muTrkQuality_  .push_back(-99);
     } else {
-      muInnerD0_     .push_back(innMu->dxy(pv));
-      muInnerDz_     .push_back(innMu->dz(pv));
+      muInnerD0_     .push_back(innMu->dxy(pv.position()));
+      muInnerDz_     .push_back(innMu->dz(pv.position()));
       muTrkLayers_   .push_back(innMu->hitPattern().trackerLayersWithMeasurement());
       muPixelLayers_ .push_back(innMu->hitPattern().pixelLayersWithMeasurement());
       muPixelHits_   .push_back(innMu->hitPattern().numberOfValidPixelHits());
