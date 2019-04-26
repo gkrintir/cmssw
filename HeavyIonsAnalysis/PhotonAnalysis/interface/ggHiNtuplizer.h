@@ -20,6 +20,7 @@
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 
 using namespace std;
 
@@ -36,9 +37,9 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
 
    void fillGenParticles (const edm::Event&);
    void fillGenPileupInfo(const edm::Event&);
-   void fillElectrons    (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
-   void fillPhotons      (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
-   void fillMuons        (const edm::Event&, const edm::EventSetup&, math::XYZPoint& pv);
+   void fillElectrons    (const edm::Event&, const edm::EventSetup&, reco::Vertex& pv);
+   void fillPhotons      (const edm::Event&, const edm::EventSetup&, reco::Vertex& pv);
+   void fillMuons        (const edm::Event&, const edm::EventSetup&, reco::Vertex& pv);
 
    // Et and pT sums
    float getGenCalIso(edm::Handle<vector<reco::GenParticle> >&, reco::GenParticleCollection::const_iterator, float dRMax, bool removeMu, bool removeNu);
@@ -77,6 +78,7 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    edm::EDGetTokenT<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > > recHitsEE_;
 
    const CaloGeometry *geo;
+   const TransientTrackBuilder* tb;
 
    EffectiveAreas effectiveAreas_;
 
@@ -129,8 +131,10 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    vector<float>  eleEn_;
    vector<float>  eleD0_;
    vector<float>  eleDz_;
+   vector<float>  eleIP3D_;
    vector<float>  eleD0Err_;
    vector<float>  eleDzErr_;
+   vector<float>  eleIP3DErr_;
    vector<float>  eleTrkPt_;
    vector<float>  eleTrkEta_;
    vector<float>  eleTrkPhi_;
@@ -436,6 +440,10 @@ class ggHiNtuplizer : public edm::EDAnalyzer {
    vector<int>    muIsGood_;
    vector<float>  muD0_;
    vector<float>  muDz_;
+   vector<float>  muIP3D_;
+   vector<float>  muD0Err_;
+   vector<float>  muDzErr_;
+   vector<float>  muIP3DErr_;
    vector<float>  muChi2NDF_;
    vector<float>  muInnerD0_;
    vector<float>  muInnerDz_;

@@ -24,6 +24,9 @@
 <use   name="RecoHI/HiEgammaAlgos"/>
 <use   name="DataFormats/HeavyIonEvent"/>
 <use   name="HeavyIonsAnalysis/PhotonAnalysis"/>
+<use   name="TrackingTools/IPTools"/>
+<use   name="TrackingTools/Records"/>
+<use   name="TrackingTools/TransientTrack"/>
 <use   name="CLHEP"/>
 <use   name="root"/>
 <flags   EDM_PLUGIN="1"/>
