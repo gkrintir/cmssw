@@ -831,7 +831,6 @@ void ggHiNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es)
 
   // best-known primary vertex coordinates
   reco::Vertex pv(math::XYZPoint(0, 0, -999), math::Error<3>::type());
-  //for (vector<reco::Vertex>::const_iterator v = vtxHandle->begin(); v != vtxHandle->end(); ++v)
   for (const auto& v : *vtxHandle)
     if (!v.isFake()) {
       pv = v;
@@ -1064,8 +1063,7 @@ void ggHiNtuplizer::fillElectrons(const edm::Event& e, const edm::EventSetup& es
   
 
   // loop over electrons
-  //for (edm::View<reco::GsfElectron>::const_iterator ele = gsfElectronsHandle->begin(); ele != gsfElectronsHandle->end(); ++ele) {
-  for (auto ele = gsfElectronsHandle->begin(); ele != gsfElectronsHandle->end(); ++ele) {
+  for (edm::View<reco::GsfElectron>::const_iterator ele = gsfElectronsHandle->begin(); ele != gsfElectronsHandle->end(); ++ele) {
     eleCharge_           .push_back(ele->charge());
     eleChargeConsistent_ .push_back((int)ele->isGsfCtfScPixChargeConsistent());
     eleSCPixCharge_      .push_back(ele->scPixCharge());
