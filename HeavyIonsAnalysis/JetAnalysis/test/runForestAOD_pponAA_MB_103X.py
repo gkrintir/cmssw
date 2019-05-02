@@ -92,7 +92,32 @@ process.akPu4PFcorr.payload = "AK4PF"
 process.akCs4PFcorr.payload = "AK4PF"
 process.akPu4PFJets.jetPtMin = 1
 
+# Add a second hiFJRhoProducer and hiFJGridEmptyAreaCalculator with finer binning 
+process.hiFJRhoProducerFiner = process.hiFJRhoProducer.clone()
+process.hiFJRhoProducerFiner.etaRanges = cms.vdouble(-5., -4., -3, -2.5, -2.0, -0.8, 0.8, 2.0, 2.5, 3., 4., 5.)
+process.hiFJGridEmptyAreaCalculatorFiner = process.hiFJGridEmptyAreaCalculator.clone()
+process.hiFJGridEmptyAreaCalculatorFiner.mapEtaEdges = cms.InputTag('hiFJRhoProducerFiner','mapEtaEdges')
+process.hiFJGridEmptyAreaCalculatorFiner.mapToRho = cms.InputTag('hiFJRhoProducerFiner','mapToRho')
+process.hiFJGridEmptyAreaCalculatorFiner.mapToRhoM = cms.InputTag('hiFJRhoProducerFiner','mapToRhoM')
+
 process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzer_cff')
+# Run a second hiFJRhoAnalyzer using as input the modified hiFJRhoProducer and hiFJGridEmptyAreaCalculator
+process.hiFJRhoAnalyzer2 = process.hiFJRhoAnalyzer.clone()
+process.hiFJRhoAnalyzer2.etaMap        = cms.InputTag('hiFJRhoProducerFiner','mapEtaEdges','HiForest')
+process.hiFJRhoAnalyzer2.rho           = cms.InputTag('hiFJRhoProducerFiner','mapToRho')
+process.hiFJRhoAnalyzer2.rhom         = cms.InputTag('hiFJRhoProducerFiner','mapToRhoM')
+process.hiFJRhoAnalyzer2.ptJets        = cms.InputTag('hiFJRhoProducerFiner','ptJets')
+process.hiFJRhoAnalyzer2.etaJets       = cms.InputTag('hiFJRhoProducerFiner','etaJets')
+process.hiFJRhoAnalyzer2.areaJets      = cms.InputTag('hiFJRhoProducerFiner','areaJets')
+process.hiFJRhoAnalyzer2.rhoCorr       = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapToRhoCorr')
+process.hiFJRhoAnalyzer2.rhomCorr      = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapToRhoMCorr')
+process.hiFJRhoAnalyzer2.rhoCorr1Bin   = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapToRhoCorr1Bin')
+process.hiFJRhoAnalyzer2.rhomCorr1Bin  = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapToRhoMCorr1Bin')
+process.hiFJRhoAnalyzer2.rhoGrid       = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapRhoVsEtaGrid')
+process.hiFJRhoAnalyzer2.meanRhoGrid   = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapMeanRhoVsEtaGrid')
+process.hiFJRhoAnalyzer2.etaMaxRhoGrid = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapEtaMaxGrid')
+process.hiFJRhoAnalyzer2.etaMinRhoGrid = cms.InputTag('hiFJGridEmptyAreaCalculatorFiner','mapEtaMinGrid')
+
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.doTrackMatching  = cms.bool(True)
 
@@ -192,6 +217,8 @@ process.ana_step = cms.Path(
     process.hiEvtAnalyzer +
     process.genCleanedSequence +
     process.jetSequence +
+    process.hiFJRhoProducerFiner+
+    process.hiFJGridEmptyAreaCalculatorFiner+
     process.HiGenParticleAna +
     process.ggHiNtuplizer +
     process.ggHiNtuplizerGED +
