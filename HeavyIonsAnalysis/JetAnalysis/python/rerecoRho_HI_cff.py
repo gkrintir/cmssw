@@ -11,8 +11,8 @@ kt4PFJets = cms.EDAlias(kt4HIPFJets = cms.VPSet(cms.PSet(
 kt4PFJetsForRho = cms.EDAlias(kt4HIPFJetsForRho = cms.VPSet(cms.PSet(
     type = cms.string('recoPFJets'))))
 
-from RecoHI.HiJetAlgos.hiFJRhoProducer import hiFJRhoProducer
-from RecoHI.HiJetAlgos.hiFJGridEmptyAreaCalculator_cff import hiFJGridEmptyAreaCalculator
+from RecoHI.HiJetAlgos.hiFJRhoProducers import hiFJRhoProducer
+from RecoHI.HiJetAlgos.hiFJGridEmptyAreaCalculators_cff import hiFJGridEmptyAreaCalculator
 
 rhoSequence = cms.Sequence(
     HIPFTowers +

@@ -92,32 +92,8 @@ process.akPu4PFcorr.payload = "AK4PF"
 process.akCs4PFcorr.payload = "AK4PF"
 process.akPu4PFJets.jetPtMin = 1
 
-# Add a second hiFJRhoProducer and hiFJGridEmptyAreaCalculator with finer binning 
-process.hiFJRhoProducerFinerBins = process.hiFJRhoProducer.clone()
-process.hiFJRhoProducerFinerBins.etaRanges = cms.vdouble(-5., -4., -3, -2.5, -2.0, -0.8, 0.8, 2.0, 2.5, 3., 4., 5.)
-process.hiFJGridEmptyAreaCalculatorFinerBins = process.hiFJGridEmptyAreaCalculator.clone()
-process.hiFJGridEmptyAreaCalculatorFinerBins.mapEtaEdges = cms.InputTag('hiFJRhoProducerFinerBins','mapEtaEdges')
-process.hiFJGridEmptyAreaCalculatorFinerBins.mapToRho = cms.InputTag('hiFJRhoProducerFinerBins','mapToRho')
-process.hiFJGridEmptyAreaCalculatorFinerBins.mapToRhoM = cms.InputTag('hiFJRhoProducerFinerBins','mapToRhoM')
 
-process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzer_cff')
-# Run a second hiFJRhoAnalyzer using as input the modified hiFJRhoProducer and hiFJGridEmptyAreaCalculator
-process.hiFJRhoAnalyzerFinerBins = process.hiFJRhoAnalyzer.clone()
-process.hiFJRhoAnalyzerFinerBins.etaMap        = cms.InputTag('hiFJRhoProducerFinerBins','mapEtaEdges','HiForest')
-process.hiFJRhoAnalyzerFinerBins.rho           = cms.InputTag('hiFJRhoProducerFinerBins','mapToRho')
-process.hiFJRhoAnalyzerFinerBins.rhom         = cms.InputTag('hiFJRhoProducerFinerBins','mapToRhoM')
-process.hiFJRhoAnalyzerFinerBins.ptJets        = cms.InputTag('hiFJRhoProducerFinerBins','ptJets')
-process.hiFJRhoAnalyzerFinerBins.etaJets       = cms.InputTag('hiFJRhoProducerFinerBins','etaJets')
-process.hiFJRhoAnalyzerFinerBins.areaJets      = cms.InputTag('hiFJRhoProducerFinerBins','areaJets')
-process.hiFJRhoAnalyzerFinerBins.rhoCorr       = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapToRhoCorr')
-process.hiFJRhoAnalyzerFinerBins.rhomCorr      = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapToRhoMCorr')
-process.hiFJRhoAnalyzerFinerBins.rhoCorr1Bin   = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapToRhoCorr1Bin')
-process.hiFJRhoAnalyzerFinerBins.rhomCorr1Bin  = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapToRhoMCorr1Bin')
-process.hiFJRhoAnalyzerFinerBins.rhoGrid       = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapRhoVsEtaGrid')
-process.hiFJRhoAnalyzerFinerBins.meanRhoGrid   = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapMeanRhoVsEtaGrid')
-process.hiFJRhoAnalyzerFinerBins.etaMaxRhoGrid = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapEtaMaxGrid')
-process.hiFJRhoAnalyzerFinerBins.etaMinRhoGrid = cms.InputTag('hiFJGridEmptyAreaCalculatorFinerBins','mapEtaMinGrid')
-
+process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzers_cff')
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.doTrackMatching  = cms.bool(True)
 
