@@ -193,8 +193,6 @@ process.ana_step = cms.Path(
     process.hiEvtAnalyzer +
     process.genCleanedSequence +
     process.jetSequence +
-    process.hiFJRhoProducerFinerBins+
-    process.hiFJGridEmptyAreaCalculatorFinerBins+
     process.HiGenParticleAna +
     process.ggHiNtuplizer +
     process.ggHiNtuplizerGED +
