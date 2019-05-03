@@ -214,7 +214,6 @@ process.ana_step = cms.Path(
     process.ggHiNtuplizer +
     process.ggHiNtuplizerGED +
     process.hiFJRhoAnalyzer +
-    process.hiFJRhoAnalyzer +
     process.hiFJRhoAnalyzerFinerBins +
     process.pfcandAnalyzer +
     process.pfcandAnalyzerCS +
