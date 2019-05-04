@@ -123,7 +123,7 @@ process.akPu6PFcorr.payload = "AK4PF"
 process.akCs6PFcorr.payload = "AK4PF"
 
 
-process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzers_cff')
+process.load('HeavyIonsAnalysis.JetAnalysis.hiFJRhoAnalyzer_cff')
 process.load("HeavyIonsAnalysis.JetAnalysis.pfcandAnalyzer_cfi")
 process.pfcandAnalyzer.doTrackMatching  = cms.bool(True)
 

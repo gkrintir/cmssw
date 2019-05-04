@@ -58,7 +58,7 @@ kt4PFJetsForRho.doAreaFastjet = cms.bool(True)
 kt4PFJetsForRho.jetPtMin      = cms.double(0.0)
 kt4PFJetsForRho.GhostArea     = cms.double(0.005)
 
-from RecoHI.HiJetAlgos.hiFJRhoProducers import hiFJRhoProducer
+from RecoHI.HiJetAlgos.hiFJRhoProducer import hiFJRhoProducer
 
 akCs4PFJets = cms.EDProducer(
     "CSJetProducer",
