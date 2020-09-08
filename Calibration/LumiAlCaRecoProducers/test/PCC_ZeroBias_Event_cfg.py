@@ -7,7 +7,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("ALCARECO")
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/g/gkrintir/private/rereco_V2/CMSSW_11_1_3/src/LumiPixelsMinBias.root')
+    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/g/gkrintir/public/forZhen/LumiPixelsMinBias.root')
 )
 
 process.maxEvents = cms.untracked.PSet(
