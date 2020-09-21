@@ -7,8 +7,15 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("ALCARECO")
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:/eos/cms/store/data/Run2015D/AlCaLumiPixels/ALCARECO/LumiPixels-PromptReco-v4/000/260/039/00000/1CF2A210-5B7E-E511-8F4F-02163E014145.root','file:/eos/cms/store/data/Run2015D/AlCaLumiPixels/ALCARECO/LumiPixels-PromptReco-v4/000/260/039/00000/1E2B0829-707E-E511-B51B-02163E0145FE.root','file:/eos/cms/store/data/Run2015D/AlCaLumiPixels/ALCARECO/LumiPixels-PromptReco-v4/000/260/039/00000/2666E76A-707E-E511-92E4-02163E014689.root','file:/eos/cms/store/data/Run2015D/AlCaLumiPixels/ALCARECO/LumiPixels-PromptReco-v4/000/260/039/00000/2A1E3304-707E-E511-946C-02163E014241.root')
+    fileNames = cms.untracked.vstring(
+        'file:/afs/cern.ch/work/g/gkrintir/public/forZhen/LumiPixels.root'
+    )
 )
+
+
+# Number of events we want to process, -1 = all events
+process.maxEvents = cms.untracked.PSet(
+    input = cms.untracked.int32(10000))
 
 #Added process to select the appropriate events 
 process.OutALCARECOPromptCalibProdPCC = cms.PSet(
@@ -86,7 +93,7 @@ process.siPixelDigisForLumi = cms.EDProducer("SiPixelRawToDigi",
 
 #HLT filter for PCC
 process.ALCARECOHltFilterForPCC = cms.EDFilter("HLTHighLevel",
-    HLTPaths = cms.vstring("*Random*"),
+    HLTPaths = cms.vstring("*ZeroBias*", "*Random*"),
     eventSetupPathsKey = cms.string(""),
     TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
     andOr = cms.bool(True),
@@ -109,6 +116,32 @@ process.ALCARECOStreamPromptCalibProdPCC = cms.OutputModule("PoolOutputModule",
         'keep *_MEtoEDMConvertSiStrip_*_*')
 )
 
+process.FastMonitoringService = cms.Service("FastMonitoringService",
+    sleepTime = cms.untracked.int32(1)
+)
+
+
+process.EvFDaqDirector = cms.Service("EvFDaqDirector",
+                                     useFileBroker = cms.untracked.bool(False),
+    runNumber = cms.untracked.uint32(260039),
+    baseDir = cms.untracked.string('output'),
+    directorIsBU = cms.untracked.bool(False)
+)
+
+
+process.streamLumi = cms.OutputModule("ShmStreamConsumer",
+    SelectEvents = cms.untracked.PSet(
+
+        SelectEvents = cms.vstring( 'pathALCARECOPromptCalibProdPCC' )
+    ),
+    outputCommands = cms.untracked.vstring('drop *',
+    'keep *_alcaPCCEventProducer_*_*',
+    'keep *_alcaPCCIntegrator_*_*',
+    'keep *_MEtoEDMConvertSiStrip_*_*',
+    'keep FEDRawDataCollection_*_*_*'
+    )
+)
+
 #This is the key sequence that we are adding first...
 process.seqALCARECOPromptCalibProdPCC = cms.Sequence(process.ALCARECOHltFilterForPCC+process.alcaPCCEventProducer+process.alcaPCCIntegrator)
 
@@ -118,7 +151,9 @@ process.seqALCARECOLumiPixels = cms.Sequence(process.siPixelDigisForLumi+process
 
 process.pathALCARECOLumiPixels = cms.Path(process.seqALCARECOLumiPixels)
 
-process.ALCARECOStreamPromptCalibProdOutPath = cms.EndPath(process.ALCARECOStreamPromptCalibProdPCC)
+process.ALCARECOStreamPromptCalibProdOutPath = cms.EndPath(#process.ALCARECOStreamPromptCalibProdPCC
+                                                           #+
+                                                           process.streamLumi)
 
 process.MessageLogger = cms.Service("MessageLogger",
     FrameworkJobReport = cms.untracked.PSet(
