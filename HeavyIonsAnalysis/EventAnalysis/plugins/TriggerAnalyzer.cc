@@ -79,8 +79,7 @@ TriggerAnalyzer::TriggerAnalyzer(edm::ParameterSet const& conf)
       l1dummies(conf.getParameter<std::vector<std::string>>("l1dummybranches")),
       hltresultsToken_(consumes<edm::TriggerResults>(conf.getParameter<edm::InputTag>("hltresults"))),
       l1resultsToken_(consumes<GlobalAlgBlkBxCollection>(conf.getParameter<edm::InputTag>("l1results"))),
-//hltPrescaleProvider_(new HLTPrescaleProvider(conf, consumesCollector(), *this)) {
-  hltPrescaleProvider_(new HLTPrescaleProvider(conf.getParameter<edm::ParameterSet>("hltPSProvCfg"), consumesCollector(), *this)) {
+      hltPrescaleProvider_(new HLTPrescaleProvider(conf.getParameter<edm::ParameterSet>("hltPSProvCfg"), consumesCollector(), *this)) {
   // open the tree file and initialize the tree
   edm::Service<TFileService> fs;
   t_ = fs->make<TTree>("HltTree", "");
@@ -111,7 +110,7 @@ void TriggerAnalyzer::analyze(edm::Event const& iEvent, edm::EventSetup const& i
   fRun = iEvent.id().run();
   fBx = iEvent.bunchCrossing();
   fOrbit = iEvent.orbitNumber();
-  std::cout<<fEvent<<std::endl;
+
   if (hltresults.isValid()) {
     /* reset accept status to -1 */
     for (int i = 0; i < kMaxHLTFlag; ++i) {
