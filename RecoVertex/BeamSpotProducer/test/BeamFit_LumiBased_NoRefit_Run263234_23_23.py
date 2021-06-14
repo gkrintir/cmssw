@@ -8,7 +8,7 @@ process.source = cms.Source("PoolSource",
       file_list
     ),
     skipBadFiles = cms.untracked.bool(True),
-lumisToProcess = cms.untracked.VLuminosityBlockRange('thelumirange')
+lumisToProcess = cms.untracked.VLuminosityBlockRange('263234:23-263234:23')
 )
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
@@ -35,7 +35,7 @@ process.GlobalTag.globaltag = '75X_dataRun2_v13'
 process.load("RecoVertex.BeamSpotProducer.d0_phi_analyzer_cff")
 
 process.d0_phi_analyzer.BeamFitter.WriteAscii                = True
-process.d0_phi_analyzer.BeamFitter.AsciiFileName             = 'BeamFit_LumiBased_alcareco_template.txt'
+process.d0_phi_analyzer.BeamFitter.AsciiFileName             = 'BeamFit_LumiBased_alcareco_23_23.txt'
 process.d0_phi_analyzer.BeamFitter.AppendRunToFileName       = True
 process.d0_phi_analyzer.BeamFitter.InputBeamWidth            = -1
 process.d0_phi_analyzer.BeamFitter.MaximumImpactParameter    = 1.0
