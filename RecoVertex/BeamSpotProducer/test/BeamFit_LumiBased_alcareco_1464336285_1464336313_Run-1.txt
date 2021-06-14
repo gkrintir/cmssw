@@ -1,0 +1,39 @@
+Runnumber -1
+BeginTimeOfFit  0
+EndTimeOfFit  0
+LumiRange -1 - -1
+Type 0
+X0 0
+Y0 0
+Z0 0
+sigmaZ0 0
+dxdz 0
+dydz 0
+BeamWidthX 0
+BeamWidthY 0
+dxdy 0
+Cov(0,j) 0 0 0 0 0 0 0 0 0 
+Cov(1,j) 0 0 0 0 0 0 0 0 0 
+Cov(2,j) 0 0 0 0 0 0 0 0 0 
+Cov(3,j) 0 0 0 0 0 0 0 0 0 
+Cov(4,j) 0 0 0 0 0 0 0 0 0 
+Cov(5,j) 0 0 0 0 0 0 0 0 0 
+Cov(6,j) 0 0 0 0 0 0 0 0 0 
+Cov(7,j) 0 0 0 0 0 0 0 0 0 
+Cov(8,j) 0 0 0 0 0 0 0 0 0 
+xPV 0
+yPV 0
+dxdzPV 0
+dydzPV 0
+PVCov(0,j) 0 0 0 0 0 0 0 0 0 
+PVCov(1,j) 0 0 0 0 0 0 0 0 0 
+PVCov(2,j) 0 0 0 0 0 0 0 0 0 
+PVCov(3,j) 0 0 0 0 0 0 0 0 0 
+PVCov(4,j) 0 0 0 0 0 0 0 0 0 
+PVCov(5,j) 0 0 0 0 0 0 0 0 0 
+PVCov(6,j) 0 0 0 0 0 0 0 0 0 
+PVCov(7,j) 0 0 0 0 0 0 0 0 0 
+PVCov(8,j) 0 0 0 0 0 0 0 0 0 
+EmittanceX 0
+EmittanceY 0
+BetaStar 0

@@ -1,0 +1,4 @@
+file_list = [
+'/store/hidata/HIRun2015/HIMinimumBias7/AOD/PromptReco-v1/000/263/234/00000/F8849980-4DA7-E511-A30E-02163E013622.root'
+#'/store/data/Run2018B/ZeroBias6/AOD/PromptReco-v2/000/318/984/00000/02BBC115-987F-E811-92CD-FA163E6D0F7B.root',
+]

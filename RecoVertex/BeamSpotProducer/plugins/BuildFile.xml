@@ -7,7 +7,6 @@
 <use   name="CondFormats/BeamSpotObjects"/>
 <use   name="CondFormats/DataRecord"/>
 <use   name="CondCore/DBOutputService"/>
-<use   name="boost"/>
 
 <use   name="root"/>
 <use   name="rootminuit"/>
@@ -24,9 +23,6 @@
   <flags   EDM_PLUGIN="1"/>
 </library>
 <library   file="BeamSpotWrite2DB.cc" name="BeamSpotWrite2DB">
-  <flags   EDM_PLUGIN="1"/>
-</library>
-<library   file="BeamSpotFakeConditions.cc" name="BeamSpotFakeConditions">
   <flags   EDM_PLUGIN="1"/>
 </library>
 <library   file="BeamSpotFromDB.cc" name="BeamSpotFromDB">

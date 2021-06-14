@@ -1,0 +1,19 @@
+000 (7877270.000.000) 05/20 00:14:00 Job submitted from host: <137.138.76.70:9618?addrs=137.138.76.70-9618&alias=bigbird11.cern.ch&noUDP&sock=schedd_1756_0c65_15>
+...
+040 (7877270.000.000) 05/20 00:16:34 Started transferring input files
+	Transferring to host: <188.184.213.78:9618?addrs=188.184.213.78-9618+[2001-1458-301-10c--100-156]-9618&alias=b7g24n0579.cern.ch&noUDP&sock=slot1_10_4826_1a7d_23978>
+...
+040 (7877270.000.000) 05/20 00:16:34 Finished transferring input files
+...
+007 (7877270.000.000) 05/20 00:16:34 Shadow exception!
+	Error from slot1_10@b7g24n0579.cern.ch: SHADOW at 137.138.76.70 failed to send file(s) to <188.184.213.78:44986>: error reading from /tmp/x509up_u61469: (errno 2) No such file or directory; STARTER failed to receive file(s) from <137.138.76.70:9618>
+	0  -  Run Bytes Sent By Job
+	1148  -  Run Bytes Received By Job
+...
+012 (7877270.000.000) 05/20 00:16:34 Job was held.
+	Error from slot1_10@b7g24n0579.cern.ch: SHADOW at 137.138.76.70 failed to send file(s) to <188.184.213.78:44986>: error reading from /tmp/x509up_u61469: (errno 2) No such file or directory; STARTER failed to receive file(s) from <137.138.76.70:9618>
+	Code 13 Subcode 2
+...
+009 (7877270.000.000) 05/20 00:37:21 Job was aborted by the user.
+	via condor_rm (by user gkrintir)
+...
