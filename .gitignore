@@ -32,3 +32,6 @@ HeavyIonsAnalysis/Configuration/test/*.root
 
 #ignore mac specific file
 .DS_Store
+.__afs*
+*.root
+crab_projects/
