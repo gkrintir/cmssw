@@ -77,6 +77,17 @@ private:
   void LookThroughJetSplits(fastjet::PseudoJet jj, int i);
   double getPtRel(const reco::PFCandidate& lep, const pat::Jet& jet );
 
+    // --- NEW: B-Tagging Maps ---
+    // Stores the configuration for which taggers to run
+    std::map<std::string, std::map<std::string, edm::EDGetTokenT<reco::JetTagCollection>>> jetTaggers_;
+    // Stores the actual discriminator values to be saved in the tree
+    std::map<std::string, std::map<std::string, std::vector<float>>> jets_discr_;
+
+    // --- NEW: Helper Functions ---
+    std::pair<float, float> calculateWTAAxis(const reco::Jet& jet);
+    float getBTagValue(const edm::Handle<reco::JetTagCollection> &bTags, const pat::Jet &jet);
+    void fillBtagging(const pat::Jet& jet, int jIndex, const std::map<std::string, std::map<std::string, edm::Handle<reco::JetTagCollection>>>& jetTaggers);
+  
   void saveDaughters( const reco::GenParticle & gen);
   void saveDaughters( const reco::Candidate & gen);
   int  getGroomedGenJetIndex(const reco::GenJet& jet) const;
@@ -206,6 +217,11 @@ private:
     float jteta[MAXJETS] = {0};
     float jtphi[MAXJETS] = {0};
 
+    float WTAeta[MAXJETS] = {0};
+    float WTAphi[MAXJETS] = {0};
+    float refWTAeta[MAXJETS] = {0};
+    float refWTAphi[MAXJETS] = {0};
+    
     float jtdyn_var[MAXJETS] = {0};
     int jtdyn_split[MAXJETS] = {0};
     float jtdyn_deltaR[MAXJETS] = {0};

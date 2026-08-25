@@ -10,7 +10,7 @@ process = cms.Process('HiForest', Run3_2025_OXY)
 
 # HiForest info
 process.load("HeavyIonsAnalysis.EventAnalysis.HiForestInfo_cfi")
-process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 150X, data")
+#process.HiForestInfo.info = cms.vstring("HiForest, miniAOD, 150X, data")
 
 # import subprocess, os
 # version = subprocess.check_output(
@@ -33,7 +33,7 @@ process.source = cms.Source("PoolSource",
 
 # number of events to process, set to -1 to process all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(5000)
     )
 
 ###############################################################################
@@ -152,11 +152,11 @@ process.forest = cms.Path(
     process.HiForestInfo +
     process.centralityBin +
     process.hiEvtAnalyzer +
-    process.hltanalysis +
+    #process.hltanalysis +
     # process.hltobject +
     # process.l1object
-    process.trackSequencePbPb +
-    process.particleFlowAnalyser    #+
+    process.trackSequencePbPb #+
+    #process.particleFlowAnalyser    #+
     # process.ggHiNtuplizer +
     # process.zdcSequencePbPb +
     # process.fscSequence +
@@ -176,12 +176,12 @@ jetAbsEtaMax = 2.5
 # Choose which additional information is added to jet trees
 doHIJetID = True             # Fill jet ID and composition information branches
 doWTARecluster = True        # Add jet phi and eta for WTA axis
-doBtagging  =  False         # Note that setting to True increases computing time a lot
+doBtagging  =  True         # Note that setting to True increases computing time a lot
 
 # 0 means use original mini-AOD jets, otherwise use R value, e.g., 3,4,8
 # Add all the values you want to process to the list
 # These will create collections of CS subtracted jets (only eta dependent background)
-jetLabelsCS = ["2", "4"]
+jetLabelsCS = ["2", "4", "6", "8"]
 
 # For this list, give the R-values for flow subtracted CS jets (eta and phi dependent background)
 jetLabelsFlowCS = []
@@ -213,7 +213,7 @@ for jetLabel in allJetLabels:
         getattr(process,"akCs"+jetLabel+"PFJetAnalyzer").pfUnifiedParticleTransformerAK4JetTags = cms.untracked.string("pfUnifiedParticleTransformerAK4JetTagsAK"+jetLabel+"PFBtag")
     process.forest += getattr(process,"akCs"+jetLabel+"PFJetAnalyzer")
 
-process.forest += process.hiFJRhoFlowModulationProducer * process.rhoAnalysis * process.randomConeAnalysisR4 * process.randomConeAnalysisR2
+process.forest += process.hiFJRhoFlowModulationProducer * process.rhoAnalysis * process.randomConeAnalysisR4 * process.randomConeAnalysisR2 * process.randomConeAnalysisR6 * process.randomConeAnalysisR8
 
 #########################
 # Event Selection -> add the needed filters here
@@ -240,9 +240,9 @@ process.PAcollisionEventSelection = cms.Sequence(
 process.pileupVertexFilter = cms.Path(process.PAcollisionEventSelection)
 process.load('HeavyIonsAnalysis.EventAnalysis.hffilterPF_cfi')
 # process.load('HeavyIonsAnalysis.EventAnalysis.hffilter_cfi')
-process.OOphfCoincFilterPF2Th4 = cms.Path(process.phfCoincFilterPF2Th4)
-process.OOphfCoincFilterPF2Th4 = cms.Path(process.phfCoincFilterPF2Th10)
-process.OOphfCoincFilterPF2Th4 = cms.Path(process.phfCoincFilterPF2Th13)
+process.OOpfCoincFilterPF2Th4 = cms.Path(process.phfCoincFilterPF2Th4)
+process.OOpfCoincFilterPF2Th10 = cms.Path(process.phfCoincFilterPF2Th10) #bug!!!!!
+process.OOpfCoincFilterPF2Th13 = cms.Path(process.phfCoincFilterPF2Th13) #bug!!!!
 # process.pphfCoincFilter4Th2 = cms.Path(process.phfCoincFilter4Th2)
 # process.pphfCoincFilter1Th3 = cms.Path(process.phfCoincFilter1Th3)
 # process.pphfCoincFilter2Th3 = cms.Path(process.phfCoincFilter2Th3)

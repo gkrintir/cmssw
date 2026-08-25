@@ -56,7 +56,7 @@ phfCoincFilterPF5Th10 = phfCoincFilterPF2Th4.clone(threshold = 10, minnumtowers 
 phfCoincFilterPF2Th13 = phfCoincFilterPF2Th4.clone(threshold = 13, minnumtowers = 2)
 
 phfCoincFilterPF4Th2 = phfCoincFilterPF2Th4.clone(threshold = 2, minnumtowers = 4)
-
+'''
 pphfCoincFilterPF4Th2 = cms.Path(phfCoincFilterPF4Th2)
 pphfCoincFilterPF1Th3 = cms.Path(phfCoincFilterPF1Th3)
 pphfCoincFilterPF2Th3 = cms.Path(phfCoincFilterPF2Th3)
@@ -99,3 +99,4 @@ pphfCoincFilterPF3Th10 = cms.Path(phfCoincFilterPF3Th10)
 pphfCoincFilterPF4Th10 = cms.Path(phfCoincFilterPF4Th10)
 pphfCoincFilterPF5Th10 = cms.Path(phfCoincFilterPF5Th10)
 pphfCoincFilterPF2Th13 = cms.Path(phfCoincFilterPF2Th13)
+'''

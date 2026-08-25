@@ -19,3 +19,12 @@ randomConeAnalysisR2 = randomConeAnalysisR4.clone(
 randomConeAnalysisR3 = randomConeAnalysisR4.clone(
                                 rngConeRadius   = cms.double(0.3),
 )
+
+randomConeAnalysisR6 = randomConeAnalysisR4.clone(
+                                rngConeRadius   = cms.double(0.6),
+)
+
+
+randomConeAnalysisR8 = randomConeAnalysisR4.clone(
+                                rngConeRadius   = cms.double(0.8),
+)

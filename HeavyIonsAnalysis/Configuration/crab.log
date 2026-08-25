@@ -17,3 +17,29 @@ Traceback (most recent call last):
     raise ConfigurationException(msg)
 CRABClient.ClientExceptions.ConfigurationException: [91mError[0m: crab_OO_IonPhysics24_Re is not a valid CRAB project directory.
 INFO 2025-09-16 19:51:12.308 UTC: 	 Log file is /afs/cern.ch/user/v/vavladim/public/recovery_OO_setup/CMSSW_15_0_11/src/HeavyIonsAnalysis/Configuration/crab.log
+DEBUG 2026-06-05 14:48:28.241 UTC: 	 CRAB Client version: v3.251020
+DEBUG 2026-06-05 14:48:28.241 UTC: 	 Running on: Linux lxplus942.cern.ch 5.14.0-687.10.1.el9_8.x86_64 #1 SMP PREEMPT_DYNAMIC Mon May 18 15:13:25 EDT 2026 x86_64 x86_64 x86_64 GNU/Linux
+DEBUG 2026-06-05 14:48:28.241 UTC: 	 Not using Singularity
+DEBUG 2026-06-05 14:48:28.241 UTC: 	 Operating System: Red Hat Enterprise Linux 9.8 (Plow)
+DEBUG 2026-06-05 14:48:28.242 UTC: 	 Executing command: 'submit'
+DEBUG 2026-06-05 14:48:28.243 UTC: 	 Found CRAB cache file /afs/cern.ch/user/g/gkrintir/.crab3
+INFO 2026-06-05 14:48:28.336 UTC: 	 Will use CRAB configuration file submit_multidataset_OO_DATA.py
+DEBUG 2026-06-05 14:48:28.336 UTC: 	 Loading CRAB configuration file.
+DEBUG 2026-06-05 14:48:28.370 UTC: 	 Will use CRAB plugin ANALYSIS (i.e. will run an analysis job type).
+ERROR 2026-06-05 14:48:28.393 UTC: 	 Working area '/afs/cern.ch/work/g/gkrintir/oxy/CMSSW_15_0_11/src/HeavyIonsAnalysis/Configuration/crab_projects/crab_OO_data_filtered' already exists 
+Please change the requestName in the config file
+ERROR 2026-06-05 14:48:28.393 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.251020.00/bin/crab.py", line 157, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.251020.00/bin/crab.py", line 135, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])  # the crab command to be executed
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.251020.00/lib/CRABClient/Commands/submit.py", line 37, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args=True)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.251020.00/lib/CRABClient/Commands/SubCommand.py", line 328, in __init__
+    self.requestarea, self.requestname, self.logfile = createWorkArea(
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.251020.00/lib/CRABClient/ClientUtilities.py", line 392, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+CRABClient.ClientExceptions.ConfigException: Working area '/afs/cern.ch/work/g/gkrintir/oxy/CMSSW_15_0_11/src/HeavyIonsAnalysis/Configuration/crab_projects/crab_OO_data_filtered' already exists 
+Please change the requestName in the config file
+INFO 2026-06-05 14:48:28.411 UTC: 	 Log file is /afs/cern.ch/work/g/gkrintir/oxy/CMSSW_15_0_11/src/HeavyIonsAnalysis/Configuration/crab.log

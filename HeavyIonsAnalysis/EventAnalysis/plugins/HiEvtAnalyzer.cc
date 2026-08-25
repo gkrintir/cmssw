@@ -569,6 +569,7 @@ void HiEvtAnalyzer::beginJob() {
   thi_->Branch("hiBin", &hiBin, "hiBin/I");
   thi_->Branch("hiBin_up", &hiBin_up, "hiBin_up/I");
   thi_->Branch("hiBin_down", &hiBin_down, "hiBin_down/I");
+  /*
   thi_->Branch("hiHF", &hiHF, "hiHF/F");
   thi_->Branch("hiHFplus", &hiHFplus, "hiHFplus/F");
   thi_->Branch("hiHFminus", &hiHFminus, "hiHFminus/F");
@@ -601,18 +602,22 @@ void HiEvtAnalyzer::beginJob() {
   thi_->Branch("hiNtracksPtCut", &hiNtracksPtCut, "hiNtracksPtCut/I");
   thi_->Branch("hiNtracksEtaCut", &hiNtracksEtaCut, "hiNtracksEtaCut/I");
   thi_->Branch("hiNtracksEtaPtCut", &hiNtracksEtaPtCut, "hiNtracksEtaPtCut/I");
-  
+  */
   thi_->Branch("hiHF_pf", &hiHF_pf, "hiHF_pf/F");
+  /*
   thi_->Branch("hiHFE_pf", &hiHFE_pf, "hiHFE_pf/F");
 
   thi_->Branch("hiHF_pfha", &hiHF_pfha, "hiHF_pfha/F");
   thi_->Branch("hiHF_pfem", &hiHF_pfem, "hiHF_pfem/F");
+  */
   thi_->Branch("hiHFPlus_pf", &hiHFPlus_pf, "hiHFPlus_pf/F");
+  /*
   thi_->Branch("hiHFEPlus_pf", &hiHFEPlus_pf, "hiHFEPlus_pf/F");
   thi_->Branch("hiHFPlus_pfha", &hiHFPlus_pfha, "hiHFPlus_pfha/F");
   thi_->Branch("hiHFPlus_pfem", &hiHFPlus_pfem, "hiHFPlus_pfem/F");
-
+  */
   thi_->Branch("hiHFMinus_pf", &hiHFMinus_pf, "hiHFMinus_pf/F");
+  /*
   thi_->Branch("hiHFEMinus_pf", &hiHFEMinus_pf, "hiHFEMinus_pf/F");
   thi_->Branch("hiHFMinus_pfha", &hiHFMinus_pfha, "hiHFMinus_pfha/F");
   thi_->Branch("hiHFMinus_pfem", &hiHFMinus_pfem, "hiHFMinus_pfem/F");
@@ -636,6 +641,7 @@ void HiEvtAnalyzer::beginJob() {
   thi_->Branch("numMinHFTower3", &numMinHFTower3, "numMinHFTower3/I");
   thi_->Branch("numMinHFTower4", &numMinHFTower4, "numMinHFTower4/I");
   thi_->Branch("numMinHFTower5", &numMinHFTower5, "numMinHFTower5/I");
+  */
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
