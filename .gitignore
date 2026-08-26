@@ -20,7 +20,7 @@ HeavyIonsAnalysis/Configuration/test/.__afsBA54
 HeavyIonsAnalysis/Configuration/test/dump.py
 HeavyIonsAnalysis/Configuration/test/vanilla_forest_MC.py
 
-HeavyIonsAnalysis/VertexAnalysis/
+
 HeavyIonsAnalysis/Configuration/test/*.csv
 RooUnfold/
 HeavyIonsAnalysis/Configuration/test/crab_projects/
