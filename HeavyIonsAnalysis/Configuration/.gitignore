@@ -1,0 +1,6 @@
+# Local CRAB task directories and submission logs.
+/crab_projects/
+/crab*_projects/
+/crab.log
+/submit_*.log
+/__pycache__/

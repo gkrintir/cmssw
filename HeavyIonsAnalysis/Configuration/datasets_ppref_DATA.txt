@@ -1,0 +1,8 @@
+# 2024 pp-reference HardProbes datasets
+# One CRAB task will be submitted for each non-comment line.
+
+/PPRefHardProbes0/Run2024J-PromptReco-v1/MINIAOD
+/PPRefHardProbes1/Run2024J-PromptReco-v1/MINIAOD
+/PPRefHardProbes2/Run2024J-PromptReco-v1/MINIAOD
+/PPRefHardProbes3/Run2024J-PromptReco-v1/MINIAOD
+/PPRefHardProbes4/Run2024J-PromptReco-v1/MINIAOD

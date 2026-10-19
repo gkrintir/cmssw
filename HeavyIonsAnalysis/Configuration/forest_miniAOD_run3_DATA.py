@@ -152,7 +152,7 @@ process.forest = cms.Path(
     process.HiForestInfo +
     process.centralityBin +
     process.hiEvtAnalyzer +
-    #process.hltanalysis +
+    process.hltanalysis +
     # process.hltobject +
     # process.l1object
     process.trackSequencePbPb #+
@@ -181,7 +181,7 @@ doBtagging  =  True         # Note that setting to True increases computing time
 # 0 means use original mini-AOD jets, otherwise use R value, e.g., 3,4,8
 # Add all the values you want to process to the list
 # These will create collections of CS subtracted jets (only eta dependent background)
-jetLabelsCS = ["2", "4", "6", "8"]
+jetLabelsCS = ["4", "8"]
 
 # For this list, give the R-values for flow subtracted CS jets (eta and phi dependent background)
 jetLabelsFlowCS = []
